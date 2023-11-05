@@ -1,0 +1,486 @@
+#!/bin/bash
+
+###
+### INITIAL SETUP
+###
+
+# Create a custom .bash_frg file in your home directory to source before running frg codes - add commands when noted below to this to enable frg suite
+touch ~/.bash_frg
+
+# clear all modules
+# module purge
+
+
+# Load following modules and add to .bash_frg file above at startup
+module load gcc/10.4.0
+# TODO which boost 
+module load boost/1.83.0-gcc_10.4.0 
+# TODO what is comp-intel
+# module load comp-intel
+module load intel/2018.1
+# TODO what is mpi-hpe
+# module load mpi-hpe/mpt
+module load hdf5/1.8.19-intel-2018.1
+module load netcdf/c/4.6.1-intel-2013.1
+
+export HDF5DIR=/gpfs/share/software/hdf5/1.8.19/intel/2018.1
+export NETCDF=/gpfs/share/software/netcdf/c/4.6.1/intel/2013.1
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HDF5DIR/lib:$NETCDF/lib
+
+# Check to make sure the following exist:
+which flex
+which bison
+echo $MKLROOT
+echo $BOOST_ROOT
+
+# otherwise 
+export BOOST_ROOT=/gpfs/share/software/boost/1.83.0/gcc_10.4.0 
+
+# Create an frg folder where you will install the frg codes - suggest using your home directory on Pleiades
+cd
+mkdir frg
+cd frg
+
+# Create env variable for frg home and also add to your .bash_frg file
+export FRG_HOME=~/frg
+
+# Download and extract newer Cmake required for some packages below
+curl -L -O https://github.com/Kitware/CMake/releases/download/v3.26.3/cmake-3.26.3-linux-x86_64.tar.gz
+tar -xzvf cmake-3.26.3-linux-x86_64.tar.gz
+
+# Add new cmake to .bash_frg file and source the file
+export PATH=~/frg/cmake-3.26.3-linux-x86_64/bin:${PATH}
+
+# OPEN-MPI
+# Download and build/install openmpi
+cd $FRG_HOME
+curl -L -O  https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.3.tar.gz
+tar -xzvf openmpi-4.0.3.tar.gz
+cd openmpi-4.0.3
+
+
+
+# If you are using slurm system
+./configure \
+--prefix=$FRG_HOME/openmpi-4.0.3/install \
+--enable-mpi-interface-warning \
+--enable-mpirun-prefix-by-default \
+--without-verbs \
+--enable-mpi-threads CC=gcc
+
+
+make -j 24 all
+make install
+
+# EIGEN
+# Download and build/install eigen
+cd $FRG_HOME
+curl -L -O https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.gz
+tar -xzvf eigen-3.4.0.tar.gz
+cd eigen-3.4.0
+mkdir build
+cd build
+cmake \
+-DCMAKE_INSTALL_PREFIX=../install \
+-DCMAKE_C_COMPILER=gcc \
+-DCMAKE_CXX_COMPILER=g++ \
+-DCMAKE_Fortran_COMPILER=gfortran \
+..
+make install
+
+# PARMETIS
+# Download and build/install parmetis
+cd $FRG_HOME
+## curl -L -O http://glaros.dtc.umn.edu/gkhome/fetch/sw/parmetis/parmetis-4.0.3.tar.gz
+curl -L -O https://ftp.mcs.anl.gov/pub/pdetools/spack-pkgs/parmetis-4.0.3.tar.gz   
+tar -xzvf parmetis-4.0.3.tar.gz
+cd parmetis-4.0.3
+make config prefix=$PWD/build cc=$FRG_HOME/openmpi-4.0.3/install/bin/mpicc cxx=$FRG_HOME/openmpi-4.0.3/install/bin/mpicxx
+make install
+cd metis
+make config prefix=$PWD/build cc=$FRG_HOME/openmpi-4.0.3/install/bin/mpicc cxx=$FRG_HOME/openmpi-4.0.3/install/bin/mpicxx
+make install
+
+# Add the following lines to your .bashrc_AERO file and source it
+export PARMETISDIR=$FRG_HOME/parmetis-4.0.3/build
+export METISDIR==$FRG_HOME/parmetis-4.0.3/metis/build
+export METISPATH=$METISDIR
+export MPIDIR=$FRG_HOME/openmpi-4.0.3/install/bin
+export PATH=$MPIDIR:${PATH}
+
+
+cd $FRG_HOME
+# Clone or pull (if already existing) latest frg repos
+git clone https://bitbucket.org/frg/aero-f.git
+git clone https://bitbucket.org/frg/aero-s.git
+git clone https://bitbucket.org/frg/cd2tet.git
+git clone https://bitbucket.org/frg/gmsh2top.git
+git clone https://bitbucket.org/frg/matcher.git
+git clone https://bitbucket.org/frg/metis.git
+git clone https://bitbucket.org/frg/sower.git
+git clone https://bitbucket.org/frg/xp2exo.git
+
+
+###
+### AERO-F
+###
+
+# Build CGAL library for anisotropic AMR
+cd $FRG_HOME
+git clone https://github.com/CGAL/cgal
+cd cgal
+mkdir build
+cd build
+cmake \
+-DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_C_COMPILER=gcc \
+-DCMAKE_CXX_COMPILER=g++ \
+-DCMAKE_Fortran_COMPILER=gfortran \
+-DCMAKE_INSTALL_PREFIX=./install .. 
+make install
+
+# Download and unzip the GTE library
+cd $FRG_HOME
+
+curl -L -O https://www.geometrictools.com/Downloads/GeometricToolsEngine6p6.zip
+unzip GeometricToolsEngine6p6.zip
+
+# Create a build directory inside the repo folder
+cd $FRG_HOME/aero-f
+mkdir build
+cd build
+
+# Run cmake to configure build:
+cmake \
+-DCMAKE_C_COMPILER=gcc \
+-DCMAKE_CXX_COMPILER=g++ \
+-DCMAKE_Fortran_COMPILER=gfortran \
+-DCMAKE_CXX_FLAGS="-march=znver2" \
+-DCMAKE_C_FLAGS="-march=znver2" \
+-DMPI_C_COMPILER=$MPIDIR/mpicc \
+-DMPI_CXX_COMPILER=$MPIDIR/mpicxx \
+-DMPI_Fortran_COMPILER=$MPIDIR/mpif90 \
+-DBoost_INCLUDE_DIR:PATH=$BOOST_ROOT/include \
+-DEIGEN3_INCLUDE_DIR:PATH=$FRG_HOME/eigen-3.4.0 \
+-DWITH_EIGEN3:BOOL=true \
+-DUSE_CONSISTENT_ORDERING:BOOL=ON \
+-DUSE_MARCH_NATIVE:BOOL=false \
+-DMETIS_INCLUDES:PATH=$FRG_HOME/parmetis-4.0.3/metis/build/include \
+-DMETIS_LIBRARIES:FILEPATH=$FRG_HOME/parmetis-4.0.3/metis/build/lib/libmetis.a \
+-DPARMETIS_INCLUDES:PATH=$FRG_HOME/parmetis-4.0.3/build/include \
+-DPARMETIS_LIBRARIES:FILEPATH=$FRG_HOME/parmetis-4.0.3/build/lib/libparmetis.a \
+-DLAPACK_FOUND:BOOL=true \
+-DWITH_SCALAPACK=1 \
+-DSCALAPACKLIB:FILEPATH="-Wl,--start-group ${MKLROOT}/lib/intel64/libmkl_scalapack_lp64.a ${MKLROOT}/lib/intel64/libmkl_intel_lp64.a ${MKLROOT}/lib/intel64/libmkl_sequential.a ${MKLROOT}/lib/intel64/libmkl_core.a ${MKLROOT}/lib/intel64/libmkl_blacs_intelmpi_lp64.a -Wl,--end-group -lpthread -lm -ldl" \
+-DWITH_ARPACK=0 \
+-DCMAKE_BUILD_TYPE=Release ${1:-.} \
+-DWITH_CGAL:BOOL=ON \
+-DCGAL_DIR:FILEPATH=$FRG_HOME/cgal/build \
+-DWITH_GTE:BOOL=ON \
+-DGTE_INCLUDE_DIR:FILEPATH=$FRG_HOME/GeometricTools/GTE \
+-DMPIEXEC:FILEPATH=$FRG_HOME/openmpi-4.0.3/install/bin/mpiexec \
+..
+
+# Make sure everything looks reasonable and no errors are observed
+# - Everything in aero-f-2.0 should be enabled except the modal analysis
+
+# If things look good, build the package
+make -j 24
+
+
+=================================================
+           Summary of build options
+-------------------------------------------------
+Distributed execution:    YES
+Aeroelastic:              YES
+Embedded framework:       YES
+Adaptive repartitioning:  YES
+Modal:                    NO *******
+ScaLAPACK ROM:            YES
+Build type:               Release
+Extra link flags:
+=================================================
+
+
+
+###
+### AERO-S
+###
+
+# Download zoltan
+cd $FRG_HOME
+git clone https://github.com/trilinos/Trilinos
+cd Trilinos
+
+# Configure zoltan using cmake
+mkdir build
+cd build
+cmake \
+-DCMAKE_INSTALL_PREFIX:FILEPATH=../install \
+-DTPL_ENABLE_MPI:BOOL=ON \
+-DTrilinos_ENABLE_ALL_PACKAGES:BOOL=OFF \
+-DTrilinos_ENABLE_EXAMPLES:BOOL=OFF \
+-DTrilinos_VERBOSE_CONFIGURE:BOOL=ON \
+-DTrilinos_ENABLE_Zoltan:BOOL=ON \
+-DZoltan_ENABLE_EXAMPLES:BOOL=OFF \
+-DZoltan_ENABLE_TESTS:BOOL=OFF \
+-DZoltan_ENABLE_ParMETIS:BOOL=OFF \
+-DZoltan_ENABLE_Scotch:BOOL=OFF \
+-DZoltan_ENABLE_PaToH:BOOL=OFF \
+-DTrilinos_ASSERT_MISSING_PACKAGES:BOOL=OFF \
+-D CMAKE_C_COMPILER=$MPIDIR/mpicc \
+-D CMAKE_CXX_COMPILER=$MPIDIR/mpicxx \
+-D CMAKE_Fortran_COMPILER=$MPIDIR/mpif90 \
+.. |& tee OUTPUT.CMAKE
+
+# Build zoltan
+make |& tee OUTPUT.MAKE
+make install |& tee OUTPUT.INSTALL
+
+# Download Scotch
+cd $FRG_HOME
+git clone https://gitlab.inria.fr/scotch/scotch.git
+
+# Copy makefile and build scotch
+cd scotch
+cd src
+cp Make.inc/Makefile.inc.x86-64_pc_linux2 ./Makefile.inc
+# Edit Makefile.inc to change mpicc to openmpi: change the following line in Makefile.inc:
+# CCP             = mpicc
+# to 
+# CCP             = $MPIDIR/mpicc
+# echo $MPIDIR
+# /home/dzhuang/frg/openmpi-4.0.3/install/bin
+
+make libscotch
+
+# Create a build directory inside the repo folder
+cd $FRG_HOME/aero-s
+mkdir build
+cd build
+
+# Run cmake to configure build:
+cmake \
+-DCMAKE_C_COMPILER=gcc \
+-DCMAKE_CXX_COMPILER=g++ \
+-DCMAKE_Fortran_COMPILER=gfortran \
+-DMPI_C_COMPILER=$MPIDIR/mpicc \
+-DMPI_CXX_COMPILER=$MPIDIR/mpicxx \
+-DMPI_Fortran_COMPILER=$MPIDIR/mpif90 \
+-DCMAKE_CXX_FLAGS="-march=znver2" \
+-DCMAKE_C_FLAGS="-march=znver2" \
+-DSCOTCH_DIR:PATH=$FRG_HOME/scotch \
+-DBoost_INCLUDE_DIR:PATH=$BOOST_ROOT/include \
+-DEigen3_DIR:PATH=$FRG_HOME/eigen-3.4.0/install/share/eigen3/cmake \
+-DBLAS_FOUND:BOOL=TRUE \
+-DBLAS_LIBRARIES:FILEPATH="" \
+-DLAPACK_FOUND:BOOL=TRUE \
+-DBLACS_FOUND:BOOL=TRUE \
+-DBLACS_LIBRARIES:FILEPATH="" \
+-DSCALAPACK_FOUND:BOOL=TRUE \
+-DSCALAPACK_LIBRARY:FILEPATH="" \
+-DLAPACK_LIBRARIES:FILEPATH="-Wl,--start-group ${MKLROOT}/lib/intel64/libmkl_scalapack_lp64.a ${MKLROOT}/lib/intel64/libmkl_intel_lp64.a ${MKLROOT}/lib/intel64/libmkl_sequential.a ${MKLROOT}/lib/intel64/libmkl_core.a ${MKLROOT}/lib/intel64/libmkl_blacs_intelmpi_lp64.a -Wl,--end-group -lpthread -lm -ldl" \
+-DWITH_ARPACK=0 \
+-DZOLTAN_INCLUDE_PATH=$FRG_HOME/Trilinos/install/include \
+-DZOLTAN_SRC_PATH=$FRG_HOME/Trilinos/packages/zoltan/src \
+-DZOLTAN_LIBRARY=$FRG_HOME/Trilinos/install/lib/libzoltan.a \
+-DCMAKE_BUILD_TYPE=Release ${1:-.} \
+-DMPIEXEC:FILEPATH=$MPIDIR/mpiexec \
+-DEXTRALIB_MPI:FILEPATH=$MPIDIR/../lib/libmpi_mpifh.so \
+..
+
+=================================================
+           Summary of build options
+-------------------------------------------------
+MPI                       YES
+Distributed FETI:         YES
+Aeroelastic:              YES
+Mumps:                    NO
+Scalapack:                YES
+Arpack:                   NO
+Spooles:                  NO
+Cholmod:                  NO
+Pardiso:                  NO
+Acme:                     YES
+Metis:                    YES
+Eigen template library:   YES
+Torch:                    NO
+OpenMP:                   YES
+Build type:               Release
+Extra libraries:
+=================================================
+
+# If things look good, build the package
+make -j 24
+
+
+
+###
+### SOWER
+###
+
+# Make package
+cd $FRG_HOME/sower
+mkdir build
+cd build
+cmake \
+-DCMAKE_C_COMPILER=gcc \
+-DCMAKE_CXX_COMPILER=g++ \
+-DCMAKE_Fortran_COMPILER=gfortran \
+..
+make
+
+
+
+
+###
+### CD2TET
+###
+
+# Make package
+cd $FRG_HOME/cd2tet
+mkdir build
+cd build
+cmake \
+-DCMAKE_C_COMPILER=gcc \
+-DCMAKE_CXX_COMPILER=g++ \
+-DCMAKE_Fortran_COMPILER=gfortran \
+..
+make
+
+
+
+
+###
+### GMSH2TOP
+###
+
+# Make package
+cd $FRG_HOME/gmsh2top
+mkdir build
+cd build
+cmake \
+-DCMAKE_C_COMPILER=gcc \
+-DCMAKE_CXX_COMPILER=g++ \
+-DCMAKE_Fortran_COMPILER=gfortran \
+..
+make
+
+
+
+
+###
+### MATCHER
+###
+
+# Make package
+cd $FRG_HOME/matcher
+mkdir build
+cd build
+cmake \
+-DCMAKE_C_COMPILER=gcc \
+-DCMAKE_CXX_COMPILER=g++ \
+-DCMAKE_Fortran_COMPILER=gfortran \
+..
+make
+
+
+
+
+###
+### METIS
+###
+
+# Make package
+cd $FRG_HOME/metis
+mkdir build
+cd build
+cmake \
+-DCMAKE_C_COMPILER=gcc \
+-DCMAKE_CXX_COMPILER=g++ \
+-DCMAKE_Fortran_COMPILER=gfortran \
+..
+make
+
+
+
+
+###
+### XP2EXO
+###
+
+# Clone/pull the Sandia seacas repository
+cd $FRG_HOME
+git clone https://github.com/gsjaardema/seacas.git
+
+# Create env variable for seacas
+cd seacas
+export ACCESS=$PWD
+export CC=gcc
+export CXX=g++
+
+# Edit the cmake-exodus file and adjust compilers and other settings as needed:
+# - Lines 127-129 should be:
+# - Lines 40-42 should be:
+NETCDF_PATH=${NETCDF}
+PNETCDF_PATH=${INSTALL_PATH}
+HDF5_PATH=${HDF5DIR}
+
+# Make a build directory and go there
+mkdir build
+cd build
+
+# Build seacas
+# - If everything works, your libraries should be in ${ACCESS}/lib
+# - To install in a different location, do INSTALL_PATH={path_to_install} ../cmake-config
+../cmake-exodus
+make
+make install
+
+# Make xp2exo
+cd $FRG_HOME/xp2exo
+mkdir build
+cd build
+cmake \
+-DCMAKE_C_COMPILER=gcc \
+-DCMAKE_CXX_COMPILER=g++ \
+-DCMAKE_Fortran_COMPILER=gfortran \
+-DNetCDF_INCLUDE_DIR=$NETCDF/include \
+-DNetCDF_LIBRARIES="$NETCDF/lib/libnetcdf.so;$HDF5DIR/lib/libhdf5.so;$HDF5DIR/lib/libhdf5_hl.so" \
+-DEXODUS_INCLUDE_DIR=$FRG_HOME/seacas/include \
+-DEXODUS_LIBRARIES=$FRG_HOME/seacas/lib/libexodus.so \
+..
+make
+
+
+
+
+###
+### MESHTOOLS
+###
+
+# Dowload pacakge and untar
+cd $FRG_HOME
+curl -L -O https://bitbucket.org/frg/aero-f/downloads/Meshtools.tgz
+tar -xzvf Meshtools.tgz
+
+# Make packages
+cd Meshtools
+make
+
+
+
+###
+### FINAL SETUP
+###
+
+# Add following lines to .bash_frg or a config.sh in your sim directory to enable access to binaries
+export PATH=$FRG_HOME/aero-f/build/bin:$PATH
+export PATH=$FRG_HOME/aero-s/build/bin:$PATH
+export PATH=$FRG_HOME/sower//build/bin:$PATH
+export PATH=$FRG_HOME/metis/build/bin:$PATH
+export PATH=$FRG_HOME/matcher/build/bin:$PATH
+export PATH=$FRG_HOME/gmsh2top/build/bin:$PATH
+export PATH=$FRG_HOME/cd2tet/build/bin:$PATH
+export PATH=$FRG_HOME/xp2exo/build/bin:$PATH
+export PATH=$FRG_HOME/Meshtools/bin:$PATH
