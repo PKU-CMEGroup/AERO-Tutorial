@@ -21,7 +21,7 @@ This software contributes major to fluid-structure interacting problems, and has
 我们开始吧! (⚠️ 我们仍在不断完善)
 
 * 安装
-    * [在北京大学未名一号上安装AERO-Suite](Install_PKU.ipynb)
+    * [在北京大学未名一号上安装AERO-Suite](Install/Install_PKU.ipynb)
 
 
 ## 提交问题
