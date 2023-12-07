@@ -1,5 +1,8 @@
 # AERO-Tutorial
 
+<img src="Figs/AERO.png" width="800" />
+
+
 AERO-Suite 是由[Farhat Research Group](https://web.stanford.edu/group/frg/)开发的高性能软件。作为Charbel Farhat教授的前学生（学生的学生），我们致力于持续开发和维护这个软件。
 
 这个软件在解决流体-结构相互作用（流固耦合）问题方面发挥了重要作用，并已被用于研究高纵横比机翼的非线性空气弹性; 火星着陆的超音速降落伞的流固耦合作用; 海底管道爆炸等问题。本教程有两个目的:
