@@ -43,3 +43,5 @@ export PATH=$FRG_HOME/matcher/build/bin:$PATH
 export PATH=$FRG_HOME/gmsh2top/build/bin:$PATH
 export PATH=$FRG_HOME/cd2tet/build/bin:$PATH
 export PATH=$FRG_HOME/xp2exo/build/bin:$PATH
+export PATH=$FRG_HOME/Meshtools/bin:$PATH
+export PATH=$FRG_HOME/gmsh/build/bin:$PATH

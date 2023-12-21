@@ -349,6 +349,24 @@ cmake \
 make
 
 
+###
+### GMSH
+###
+
+cd $FRG_HOME
+git clone https://gitlab.onelab.info/gmsh/gmsh.git
+
+cd gmsh
+
+mkdir build
+cd build
+cmake \
+-DCMAKE_C_COMPILER=gcc \
+-DCMAKE_CXX_COMPILER=g++ \
+-DCMAKE_INSTALL_PREFIX=./ \
+..
+make
+make install
 
 
 ###
@@ -484,3 +502,4 @@ export PATH=$FRG_HOME/gmsh2top/build/bin:$PATH
 export PATH=$FRG_HOME/cd2tet/build/bin:$PATH
 export PATH=$FRG_HOME/xp2exo/build/bin:$PATH
 export PATH=$FRG_HOME/Meshtools/bin:$PATH
+export PATH=$FRG_HOME/gmsh/build/bin:$PATH

@@ -26,6 +26,12 @@ This software contributes major to fluid-structure interacting problems, and has
 * 安装
     * [在北京大学未名一号上安装AERO-Suite](Install/Install_PKU.ipynb)
 
-
+* 基本教程
+    * 机翼模拟
+        * [二维机翼模拟：使用体贴体网格的无黏定常流仿真模拟](NACA/ALE/simulations/case1/NACA_ALE_CASE1_README.ipynb)
+        
+        
+        
+        
 ## 提交问题
 欢迎您提交与AERO-Suite相关的任何问题。 

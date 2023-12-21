@@ -1,0 +1,47 @@
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+
+module purge
+
+module load anaconda/3.7.1 
+
+
+
+module load gcc/10.4.0
+module load boost/1.83.0-gcc_10.4.0
+module load intel/2018.1
+module load hdf5/1.8.19-intel-2018.1
+module load netcdf/c/4.6.1-intel-2013.1
+
+export HDF5DIR=/gpfs/share/software/hdf5/1.8.19/intel/2018.1
+export NETCDF=/gpfs/share/software/netcdf/c/4.6.1/intel/2013.1
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HDF5DIR/lib:$NETCDF/lib
+export BOOST_ROOT=/gpfs/share/software/boost/1.83.0/gcc_10.4.0
+
+export FRG_HOME=~/frg
+
+export PATH=~/frg/cmake-3.26.3-linux-x86_64/bin:${PATH}
+
+
+export PARMETISDIR=$FRG_HOME/parmetis-4.0.3/build
+export METISDIR==$FRG_HOME/parmetis-4.0.3/metis/build
+export METISPATH=$METISDIR
+export MPIDIR=$FRG_HOME/openmpi-4.0.3/install/bin
+export PATH=$MPIDIR:${PATH}
+
+
+export PATH=$FRG_HOME/aero-f/build/bin:$PATH
+export PATH=$FRG_HOME/aero-s/build/bin:$PATH
+export PATH=$FRG_HOME/sower//build/bin:$PATH
+export PATH=$FRG_HOME/metis/build/bin:$PATH
+export PATH=$FRG_HOME/matcher/build/bin:$PATH
+export PATH=$FRG_HOME/gmsh2top/build/bin:$PATH
+export PATH=$FRG_HOME/cd2tet/build/bin:$PATH
+export PATH=$FRG_HOME/xp2exo/build/bin:$PATH
+export PATH=$FRG_HOME/Meshtools/bin:$PATH
+export PATH=$FRG_HOME/gmsh/build/bin:$PATH
