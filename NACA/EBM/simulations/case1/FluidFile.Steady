@@ -3,19 +3,22 @@
 // Steady simulation for flow over a NACA airfoil 
 // Inviscid flow with Euler equation
 // Implicit time integration method
+// Embedded boundary method
 //  
 // FLUID GEOMETRY:    sources/fluid.top
+// STRUCTURE GEOMETRY:    sources/structure.top
 // -----------------------------------------------------------------------------
 
 under Problem {
   Type = Steady;
   Mode = NonDimensional;
-  Framework = BodyFitted;
+  Framework = Embedded;
 }
 
 under Input {
   Prefix = "../../data/";
   GeometryPrefix = "OUTPUT";
+  EmbeddedSurface = "../sources/structure.top";
 }
 
 under Output {
@@ -24,7 +27,7 @@ under Output {
     Prefix = "results.Steady/";
     Residual = "Residual.out";
     LiftandDrag = "../postpro.Steady/LiftandDrag.out";
-    PressureCoefficient = "PressureCoefficient.bin";
+    EmbeddedSurfacePressureCoefficient = "../postpro.Steady/EmbeddedSurfacePressureCoefficient.xpost";
     Length = 1.0;
     Surface = 1.0;
     XM = 0.0;
@@ -38,6 +41,8 @@ under Output {
     Prefix = "references.Steady/";
     Solution = "Solution.bin";
     RestartData = "Restart.data";
+    Position = "Position.bin";
+    EmbeddedPosition = "EmbeddedPosition.dat";
   }
 }
 
@@ -111,4 +116,10 @@ under Time {
       }
     }
   }
+}
+
+
+under EmbeddedFramework {
+  TypeHalfRiemannProblem = Surrogate;
+  RiemannNormal = Structure;  
 }
