@@ -14,9 +14,7 @@ under Problem {
 }
 
 under Input {
-  Prefix = "../../data/";
-  GeometryPrefix = "OUTPUT";
-  WallDistance = "OUTPUT.dwall";
+  GeometryPrefix = "../../data/OUTPUT";
 }
 
 under Output {
@@ -25,15 +23,10 @@ under Output {
     Prefix = "results.Steady/";
     Residual = "Residual.out";
     LiftandDrag = "../postpro.Steady/LiftandDrag.out";
-    PressureCoefficient = "PressureCoefficient.bin";
-    SkinFriction = "SkinFriction.bin";
-    Length = 1.0;
-    Surface = 1.0;
-    XM = 0.0;
-    YM = 0.0;
-    ZM = 0.0;
     Pressure = "Pressure.bin";
     Mach = "Mach.bin";
+    PressureCoefficient = "PressureCoefficient.bin";
+    SkinFriction = "SkinFriction.bin";
   }
   under Restart {
     Frequency = 0;
@@ -68,7 +61,6 @@ under Equations {
     Fluid = PerfectGas;
     under GasModel {
       SpecificHeatRatio = 1.4;
-      IdealGasConstant = 287.1;
     }
   }
   under ThermalConductivityModel {
@@ -113,6 +105,7 @@ under Time {
   CheckLinearSolver = Off;
   Type = Implicit;
   under Implicit {
+    Type = BackwardEuler;
     MatrixVectorProduct = FiniteDifference;
     TurbulenceModelCoupling = Weak;
     under Newton {
