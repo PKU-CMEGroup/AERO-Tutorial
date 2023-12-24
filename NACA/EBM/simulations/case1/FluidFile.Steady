@@ -29,11 +29,6 @@ under Output {
     LiftandDrag = "../postpro.Steady/LiftandDrag.out";
     PostprocessSides = 1;
     EmbeddedSurfacePressureCoefficient = "../postpro.Steady/EmbeddedSurfacePressureCoefficient.xpost";
-    Length = 1.0;
-    Surface = 1.0;
-    XM = 0.0;
-    YM = 0.0;
-    ZM = 0.0;
     Pressure = "Pressure.bin";
     Mach = "Mach.bin";
   }
@@ -50,7 +45,7 @@ under Output {
 under BoundaryConditions {
   under Inlet {
     Type = External;
-    Mach = 0.4;
+    Mach = 0.8;
     Alpha = 0.0;
     Beta = 5.0;
   }
@@ -75,7 +70,7 @@ under Space {
     Flux = Roe;
     Reconstruction = Linear;
     AdvectiveOperator = FiniteVolume;
-    Limiter = None;
+    Limiter = VanAlbada;
     Gradient = LeastSquares;
     Dissipation = SecondOrder;
     Beta = 0.3333333333333333;
@@ -88,10 +83,10 @@ under Space {
 
 under Time {
   MaxIts = 500;
-  Eps = 1.0E-6;
+  Eps = 1.0E-8;
   under CflLaw {
     Strategy = Fixed;
-    Cfl0 = 20.0;
+    Cfl0 = 100.0;
   }
   CheckLinearSolver = Off;
   Type = Implicit;
@@ -108,7 +103,6 @@ under Time {
           MaxIts = 50;
           KrylovVectors = 50;
           Eps = 0.01;
-          //Output = "stderr";
           under Preconditioner {
             Type = Ras;
             Fill = 0;
