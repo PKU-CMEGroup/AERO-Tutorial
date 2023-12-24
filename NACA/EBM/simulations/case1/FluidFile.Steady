@@ -27,6 +27,7 @@ under Output {
     Prefix = "results.Steady/";
     Residual = "Residual.out";
     LiftandDrag = "../postpro.Steady/LiftandDrag.out";
+    PostprocessSides = 1;
     EmbeddedSurfacePressureCoefficient = "../postpro.Steady/EmbeddedSurfacePressureCoefficient.xpost";
     Length = 1.0;
     Surface = 1.0;
