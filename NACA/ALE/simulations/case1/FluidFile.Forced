@@ -126,8 +126,8 @@ under Time {
     MatrixVectorProduct = FiniteDifference;
     TurbulenceModelCoupling = Weak;
     under Newton {
-      MaxIts = 1;
-      Eps = 0.01;
+      MaxIts = 5;
+      Eps = 1.0e-3;
       FailSafe = Off;
       under LinearSolver {
         under NavierStokes {

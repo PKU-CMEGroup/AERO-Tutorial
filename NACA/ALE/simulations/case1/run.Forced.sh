@@ -2,7 +2,7 @@
 
 NF=4
 
-mpirun -N $NF aerof.opt FluidFile.Forced |& tee log.Forced.out
+mpirun -n $NF aerof.opt FluidFile.Forced |& tee log.Forced.out
 
 sower -fluid -merge -con ../../data/OUTPUT.con -mesh ../../data/OUTPUT.msh \
 	-result results.Forced/Mach.bin -output postpro.Forced/Mach
