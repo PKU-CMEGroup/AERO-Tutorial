@@ -1,0 +1,157 @@
+// -----------------------------------------------------------------------------
+// SIMULATION DESCRIPTION:   
+// Unsteady simulation for flow over a NACA airfoil 
+// The airfoil undergoes the forced heaving motion
+// Turbulent flow with Navier-Stokes equation and Spalart Allmaras turbulence model
+// Implicit time integration method
+//  
+// FLUID GEOMETRY:    sources/fluid.top
+// -----------------------------------------------------------------------------
+
+under Problem {
+  Type = Forced;
+  Mode = NonDimensional;
+  Framework = BodyFitted;
+}
+
+under Input {
+  GeometryPrefix = "../../data/OUTPUT";
+  
+  Solution = "references.Steady/Solution.bin";
+  //RestartData = "references.Steady/Restart.data";
+}
+
+under Output {
+  under Postpro {
+    Frequency = 100;
+    Prefix = "results.Forced/";
+    LiftandDrag = "../postpro.Steady/LiftandDrag.out";
+    Pressure = "Pressure.bin";
+    Mach = "Mach.bin";
+    PressureCoefficient = "PressureCoefficient.bin";
+    SkinFriction = "SkinFriction.bin";
+  }
+  under Restart {
+    Frequency = 0;
+    Prefix = "references.Forced/";
+    Solution = "Solution.bin";
+    RestartData = "Restart.data";
+    WallDistance = "WallDistance.bin";
+  }
+}
+
+under BoundaryConditions {
+  under Inlet {
+    Type = External;
+    Mach = 0.4;
+    Alpha = 0.0;
+    Beta = 5.0;
+  }
+  under Wall {
+    Type = Adiabatic;
+    Integration = Full;
+  }
+}
+
+under ReferenceState { 
+  Reynolds = 10000;
+  Length = 1.0;
+}
+
+under Equations {  
+  Type = NavierStokes;   
+  under FluidModel[0] {
+    Fluid = PerfectGas;
+    under GasModel {
+      SpecificHeatRatio = 1.4;
+    }
+  }
+  under ThermalConductivityModel {
+    Type = ConstantPrandtl;
+  }
+  under ViscosityModel {
+    Type = Constant;
+  }
+  under TurbulenceClosure {
+    Type = TurbulenceModel;
+    under TurbulenceModel {
+      Type = SpalartAllmaras;
+    }
+  }
+}
+
+
+
+under Space {     
+  under NavierStokes {
+    Flux = Roe;
+    Reconstruction = Linear;
+    AdvectiveOperator = FiniteVolume;
+    Limiter = None;
+    Gradient = LeastSquares;
+    Dissipation = SecondOrder;
+    Beta = 0.3333333333333333;
+    Gamma = 1.0;
+  }
+  under Boundaries {
+    Type = StegerWarming;
+  }
+}
+
+
+under Forced{
+  under Heaving{
+    AY = 0.2;
+    AX = 0.0;
+    AZ = 0.0;
+  }
+  Type = Heaving;
+  TimeStep = 1.e-2;
+  Frequency = 0.15915494309; // 1/(2 * pi); 
+}
+
+
+
+under Time {
+  MaxTime = 10.0;
+  MaxIts = 10000;
+  under CflLaw {
+    Strategy = Fixed;
+    Cfl0 = 100.0;
+  }
+  CheckLinearSolver = Off;
+  Type = Implicit;
+  under Implicit {
+    Type=RungeKutta2;
+    MatrixVectorProduct = FiniteDifference;
+    TurbulenceModelCoupling = Weak;
+    under Newton {
+      MaxIts = 1;
+      Eps = 0.01;
+      FailSafe = Off;
+      under LinearSolver {
+        under NavierStokes {
+          Type = Gmres;
+          MaxIts = 50;
+          KrylovVectors = 50;
+          Eps = 0.01;
+          under Preconditioner {
+            Type = Ras;
+            Fill = 0;
+          }
+        }
+        under TurbulenceModel {
+          Type = Gmres;
+          MaxIts = 30;
+          KrylovVectors = 30;
+          Eps = 0.01;
+          under Preconditioner {
+            Type = Ras;
+            Fill = 0;
+          }
+        }
+      }
+    }
+  }
+}
+
