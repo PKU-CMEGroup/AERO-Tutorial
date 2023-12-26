@@ -44,7 +44,7 @@ This software contributes major to fluid-structure interacting problems, and has
   
         
     * 机翼的流固耦合模拟    
-        * [三维机翼模拟：使用体贴体网格的无粘流固耦合仿真模拟] ⚠️  
+        * [三维机翼模拟：使用体贴体网格的无粘流固耦合仿真模拟](Wing/AGARD_ALE/simulations/case1/AGARD_ALE_CASE1_FSI_README.ipynb)  
         关键词：任意拉格朗日-欧拉方法（Arbitrary Lagrangian–Eulerian methods），前处理，后处理
         
         * [三维机翼模拟：使用浸入边界方法的无粘流固耦合仿真模拟] ⚠️  
