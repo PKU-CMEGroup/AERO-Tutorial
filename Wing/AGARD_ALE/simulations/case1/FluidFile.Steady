@@ -1,0 +1,94 @@
+under Problem {
+  Type = Steady;
+  Mode = Dimensional;  
+  Framework = BodyFitted;
+}
+
+under Input {
+  GeometryPrefix = "../../data/OUTPUT";
+}
+
+under Output {
+  under Postpro {
+    Frequency = 0;
+    Prefix = "results.Steady/";
+    LiftandDrag = "../postpro.Steady/LiftandDrag.out";
+    Force = "../postpro.Steady/Force.out";
+    Mach = "Mach.bin";
+    Pressure = "Pressure.bin";
+    PressureCoefficient = "PressureCoefficient.bin";
+  }
+  under Restart {
+    Frequency = 0;
+    Prefix = "references.Steady/"; 
+    Solution = "Solution.bin";
+    RestartData = "Restart.data";
+    Position = "Position.bin";
+  }
+}
+
+under Equations {
+  Type = Euler;
+  under FluidModel[0]{
+    Fluid = PerfectGas;
+    under GasModel {
+      SpecificHeatRatio = 1.4;
+    }
+  }
+}
+
+under BoundaryConditions {
+  under Inlet {
+    Mach = 0.97;
+    Alpha = 0.0; 
+    Beta = 0.0;
+    Density = 0.61115933E-7;     // slugs / in^3
+    Pressure = 6.0;              // psi*12 ([slugs/(in-s^2)])
+  }
+}
+
+under Space {
+  under NavierStokes { 
+    Flux = Roe;
+    Reconstruction = Linear;
+    AdvectiveOperator = FiniteVolume;
+    Limiter = VanAlbada;
+    Gradient = LeastSquares;
+    Dissipation = SecondOrder;
+    Beta = 0.3333333333333333;
+    Gamma = 1.0;
+  }
+}
+
+under Time {
+  MaxIts = 500;
+  Eps = 1.0E-8;
+  under CflLaw {
+    Strategy = Fixed;
+    Cfl0 = 100.0;
+  }
+  CheckLinearSolver = Off;
+  Type = Implicit;
+  under Implicit {
+    Type = BackwardEuler;
+    MatrixVectorProduct = FiniteDifference;
+    under Newton {
+      MaxIts = 1;
+      Eps = 0.01;
+      FailSafe = Off;
+      under LinearSolver {
+        under NavierStokes {
+          Type = Gmres;
+          MaxIts = 50;
+          KrylovVectors = 50;
+          Eps = 0.01;
+          under Preconditioner {
+            Type = Ras;
+            Fill = 0;
+          }
+        }
+      }
+    }
+  }
+}
+

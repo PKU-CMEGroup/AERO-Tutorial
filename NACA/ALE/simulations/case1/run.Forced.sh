@@ -19,7 +19,6 @@ sower -fluid -merge -con ../../data/OUTPUT.con -mesh ../../data/OUTPUT.msh \
 
 
 xp2exo ../../sources/fluid.top fluid_solution.Forced.exo \
-                   ../../sources/fluid.top.dec.${NF} \
                    postpro.Forced/Mach.xpost postpro.Forced/Pressure.xpost \
                    postpro.Forced/PressureCoefficient.xpost postpro.Forced/SkinFriction.xpost
                    
