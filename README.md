@@ -37,7 +37,7 @@ This software contributes major to fluid-structure interacting problems, and has
         * [二维翼型模拟：使用浸入边界方法的无黏定常流仿真模拟](NACA/EBM/simulations/case1/NACA_EBM_CASE1_STEADY_README.ipynb)  
         关键词：Gmsh网格生成，前处理，后处理，Paraview可视化，Euler方程
         
-        * [三维翼形模拟：使用体贴体网格的非定常流仿真模拟](NACA3D/ALE/simulations/case1/NACA_ALE_CASE1_UNSTEADY_README.ipynb) ⚠️  
+        * [三维翼形模拟：使用体贴体网格的非定常流仿真模拟]⚠️  
         关键词：Navier-Stokes方程，Vreman湍流模型大涡模拟，降阶模型
         
     * 钢管的固体模拟 ⚠️
@@ -47,11 +47,27 @@ This software contributes major to fluid-structure interacting problems, and has
         * [三维机翼模拟：使用体贴体网格的无粘流固耦合仿真模拟](Wing/AGARD_ALE/simulations/case1/AGARD_ALE_CASE1_FSI_README.ipynb)  
         关键词：任意拉格朗日-欧拉方法（Arbitrary Lagrangian–Eulerian methods），前处理，后处理
         
-        * [三维机翼模拟：使用浸入边界方法的无粘流固耦合仿真模拟] ⚠️  
-        关键词：浸入边界方法（Embedded Boundary methods），网格生成，自适应网格，前处理，后处理
+        * [三维机翼模拟：使用浸入边界方法的无粘流固耦合仿真模拟](Wing/AGARD_EBM/simulations/case1/AGARD_EBM_CASE1_FSI_README.ipynb)  
+        关键词：浸入边界方法（Embedded Boundary methods），网格生成，前处理，后处理
+        
+    * [软管的流固耦合模拟] ⚠️
+      关键词：浸入边界方法（Embedded Boundary methods），网格生成，自适应网格，前处理，后处理
    
 * 应用实例 ⚠️
         
         
 ## 提交问题
+
+
+
+
+
+
+
+
+
+
+
+
+
 欢迎您提交与AERO-Suite相关的任何问题。 
