@@ -16,8 +16,8 @@ under Output {
   under Postpro {
     Frequency = 100;
     Prefix = "results.FSI/";
-    LiftandDrag = "../postpro.Steady/LiftandDrag.out";
-    Force = "../postpro.Steady/Force.out";
+    LiftandDrag = "../postpro.FSI/LiftandDrag.out";
+    Force = "../postpro.FSI/Force.out";
     Velocity = "Mach.bin";
     Pressure = "Pressure.bin"; 
   }
@@ -44,7 +44,7 @@ under Equations {
 under BoundaryConditions {
   under Inlet {
     Mach = 0.97;
-    Alpha = 0.0; 
+    Alpha = 7.5; 
     Beta = 0.0;
     Density = 0.61115933E-7;     // slugs / in^3
     Pressure = 6.0;              // psi*12 ([slugs/(in-s^2)])
