@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-#SBATCH -o GARD.ALE.Case1.FSI.out
+#SBATCH -o AGARD.ALE.Case1.FSI.out
 #SBATCH --qos=low
 #SBATCH -J AGARD.ALE.Case1.FSI
 #SBATCH --nodes=1 

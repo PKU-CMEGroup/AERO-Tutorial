@@ -19,7 +19,8 @@ under Output {
     LiftandDrag = "../postpro.FSI/LiftandDrag.out";
     Force = "../postpro.FSI/Force.out";
     Velocity = "Mach.bin";
-    Pressure = "Pressure.bin"; 
+    Pressure = "Pressure.bin";
+    Displacement = "Displacement.bin";
   }
   under Restart {
     Frequency = 0;

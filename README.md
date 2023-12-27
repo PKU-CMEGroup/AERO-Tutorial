@@ -51,23 +51,11 @@ This software contributes major to fluid-structure interacting problems, and has
         关键词：浸入边界方法（Embedded Boundary methods），网格生成，前处理，后处理
         
     * [软管的流固耦合模拟] ⚠️
-      关键词：浸入边界方法（Embedded Boundary methods），网格生成，自适应网格，前处理，后处理
+    关键词：浸入边界方法（Embedded Boundary methods），网格生成，自适应网格，前处理，后处理
    
 * 应用实例 ⚠️
         
         
 ## 提交问题
-
-
-
-
-
-
-
-
-
-
-
-
 
 欢迎您提交与AERO-Suite相关的任何问题。 
