@@ -5,8 +5,8 @@ under Problem {
 }
 
 under Input {
-  GeometryPrefix = "../../data/OUTPUT";
-  Matcher = "../../data/OUTPUT.match";
+  GeometryPrefix = "../data/fluidmodel";
+  Matcher = "../data/fluidmodel.match";
   
   Solution = "references.Steady/Solution.bin";
   //RestartData = "references.Steady/Restart.data";

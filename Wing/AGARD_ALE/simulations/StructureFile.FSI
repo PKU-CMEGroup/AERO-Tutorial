@@ -6,7 +6,7 @@ StructureElements
 ********************************************************************
 AERO
 A6 0.5 0.125
-MATCHER "../../data/OUTPUT.match.fem"
+MATCHER "../data/fluidmodel.match.fem"
 ********************************************************************
 DYNAMICS
 NEWMARK
@@ -29,7 +29,7 @@ NONLINEAR
 MASS
 **************************************************************************
 OUTPUT
-GDISPLAC "postpro.FSI/structure.GDISPLAC" 100
+GDISPLAC "postpro.FSI/structure.GDISPLAC.xpost" 100
 ********************************************************************
 INCLUDE "StructureFile.include"
 ********************************************************************

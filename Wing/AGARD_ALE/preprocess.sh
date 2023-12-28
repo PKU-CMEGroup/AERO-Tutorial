@@ -6,10 +6,10 @@ NF=8
 partnmesh sources/fluid.top $NF
 
 # match fluid domain mesh and matcher mesh
-matcher sources/fluid.top sources/matcher.top  -output data/OUTPUT
+matcher sources/fluid.top sources/matcher.top  -output data/fluidmodel
 
 
 # Run Sower to pre-process the fluid mesh
-sower -fluid -mesh sources/fluid.top -match data/OUTPUT.match.fluid  -dec sources/fluid.top.dec.$NF -cpu $NF -cluster $NF -output data/OUTPUT
+sower -fluid -mesh sources/fluid.top -match data/fluidmodel.match.fluid  -dec sources/fluid.top.dec.$NF -cpu $NF -cluster $NF -output data/fluidmodel
 
 

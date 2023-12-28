@@ -1,11 +1,11 @@
 #!/bin/bash
 
 
-#SBATCH -o AGARD.ALE.Case1.FSI.out
+#SBATCH -o Sbatch.FSI.out
 #SBATCH --qos=low
-#SBATCH -J AGARD.ALE.Case1.FSI
+#SBATCH -J AGARD.ALE.FSI
 #SBATCH --nodes=1 
-#SBATCH --ntasks-per-node=9
+#SBATCH --ntasks=9
 
 
 
@@ -13,8 +13,12 @@ source ~/.bashrc_frg
 
 
 bash run.Steady.sh
+bash postprocess.Steady.sh
+
+
 
 bash run.FSI.sh
+bash postprocess.FSI.sh
 
 sleep 5
 

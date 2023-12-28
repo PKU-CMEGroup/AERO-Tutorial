@@ -1,29 +1,33 @@
 under Problem {
   Type = Steady;
+  Framework = Embedded;
   Mode = Dimensional;  
-  Framework = BodyFitted;
 }
 
+
 under Input {
-  GeometryPrefix = "../../data/OUTPUT";
+  GeometryPrefix = "../data/fluidmodel";
+  EmbeddedSurface = "../sources/embeddedSurf.top";
 }
+
 
 under Output {
   under Postpro {
-    Frequency = 0;
     Prefix = "results.Steady/";
     LiftandDrag = "../postpro.Steady/LiftandDrag.out";
     Force = "../postpro.Steady/Force.out";
-    Mach = "Mach.bin";
+    Velocity = "Mach.bin";
     Pressure = "Pressure.bin";
-    PressureCoefficient = "PressureCoefficient.bin";
+    PostprocessSides = 1;
+    Frequency = 0;
   }
   under Restart {
-    Frequency = 0;
     Prefix = "references.Steady/"; 
     Solution = "Solution.bin";
     RestartData = "Restart.data";
-    Position = "Position.bin";
+    Position = "Position.data";
+    EmbeddedPosition = "EmbeddedPosition.data";
+    Frequency = 0;
   }
 }
 
@@ -31,9 +35,6 @@ under Equations {
   Type = Euler;
   under FluidModel[0]{
     Fluid = PerfectGas;
-    under GasModel {
-      SpecificHeatRatio = 1.4;
-    }
   }
 }
 
@@ -42,8 +43,8 @@ under BoundaryConditions {
     Mach = 0.97;
     Alpha = 7.5; 
     Beta = 0.0;
-    Density = 0.61115933E-7;     // slugs / in^3
-    Pressure = 6.0;              // psi*12 ([slugs/(in-s^2)])
+    Density = 0.61115933E-7;  // slugs / in^3
+    Pressure = 6.0;           // psi*12 ([slugs/(in-s^2)])
   }
 }
 
@@ -51,44 +52,43 @@ under Space {
   under NavierStokes { 
     Flux = Roe;
     Reconstruction = Linear;
-    AdvectiveOperator = FiniteVolume;
     Limiter = VanAlbada;
     Gradient = LeastSquares;
-    Dissipation = SecondOrder;
-    Beta = 0.3333333333333333;
-    Gamma = 1.0;
   }
 }
 
 under Time {
-  MaxIts = 500;
-  Eps = 1.0E-8;
-  under CflLaw {
-    Strategy = Fixed;
-    Cfl0 = 100.0;
-  }
-  CheckLinearSolver = Off;
   Type = Implicit;
+  MaxIts = 1000;
+  Cfl0 = 1.0;
+  CflMax = 100.0;
+  Eps = 1.0e-6;  
   under Implicit {
     Type = BackwardEuler;
-    MatrixVectorProduct = FiniteDifference;
-    under Newton {
-      MaxIts = 1;
-      Eps = 0.01;
-      FailSafe = Off;
+    under Newton { 
+      MaxIts = 1; 
+      Eps = 1e-5;
+      FailSafe = AlwaysOn;
       under LinearSolver {
         under NavierStokes {
           Type = Gmres;
-          MaxIts = 50;
-          KrylovVectors = 50;
-          Eps = 0.01;
-          under Preconditioner {
-            Type = Ras;
-            Fill = 0;
+          MaxIts = 100;
+          KrylovVectors = 100;
+          Eps = 1e-5;
+          //Output = "stdout";
+          under Preconditioner { 
+	    Type = Ras; 
+            Fill = 0; 
           }
         }
       }
     }
   }
 }
+
+under EmbeddedFramework {
+  TypeHalfRiemannProblem = Surrogate;
+  RiemannNormal = Structure;  
+}
+
 

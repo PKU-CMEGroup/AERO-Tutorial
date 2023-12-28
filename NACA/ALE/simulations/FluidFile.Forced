@@ -15,7 +15,7 @@ under Problem {
 }
 
 under Input {
-  GeometryPrefix = "../../data/OUTPUT";
+  GeometryPrefix = "../data/fluidmodel";
   
   Solution = "references.Steady/Solution.bin";
   //RestartData = "references.Steady/Restart.data";

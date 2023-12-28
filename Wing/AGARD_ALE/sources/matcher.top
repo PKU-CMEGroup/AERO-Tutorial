@@ -1,4 +1,4 @@
 ******************************************************************
-INCLUDE "simulations/case1/StructureFile.include"
+INCLUDE "simulations/StructureFile.include"
 ******************************************************************
 END

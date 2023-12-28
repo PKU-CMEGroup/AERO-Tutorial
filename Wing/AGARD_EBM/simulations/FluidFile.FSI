@@ -1,34 +1,38 @@
 under Problem {
-  Type = Steady;
+  Type = UnsteadyAeroelastic;
   Framework = Embedded;
   Mode = Dimensional;  
 }
 
-
 under Input {
-  GeometryPrefix = "../../data/OUTPUT";
-  EmbeddedSurface = "../../sources/embeddedSurf.top";
+  GeometryPrefix = "../data/fluidmodel";
+  
+  Matcher = "../data/fluidmodel.match.fluid";
+  EmbeddedSurface = "../sources/embeddedSurf.top";
+  Solution = "references.Steady/Solution.bin";
 }
-
 
 under Output {
   under Postpro {
-    Prefix = "results.Steady/";
-    LiftandDrag = "../postpro.Steady/LiftandDrag.out";
-    Force = "../postpro.Steady/Force.out";
-    Velocity = "Mach.bin";
+    Prefix = "results.FSI/";
+    LiftandDrag = "../postpro.FSI/LiftandDrag.out";
+    Force = "../postpro.FSI/Force.out";
+    Mach = "Mach.bin";
     Pressure = "Pressure.bin";
+    EmbeddedSurfaceDisplacement = "../postpro.Steady/EmbeddedSurfaceDisplacement.xpost";
+    EmbeddedSurfacePressureCoefficient = "../postpro.Steady/EmbeddedSurfacePressureCoefficient.xpost";
+    Frequency = 100;
     PostprocessSides = 1;
-    Frequency = 0;
   }
   under Restart {
-    Prefix = "references.Steady/"; 
+    Prefix = "references.FSI/"; 
     Solution = "Solution.bin";
     RestartData = "Restart.data";
     Position = "Position.data";
     EmbeddedPosition = "EmbeddedPosition.data";
     Frequency = 0;
   }
+
 }
 
 under Equations {
@@ -54,30 +58,35 @@ under Space {
     Reconstruction = Linear;
     Limiter = VanAlbada;
     Gradient = LeastSquares;
+    Beta = 0.333333333333333;
   }
 }
 
 under Time {
   Type = Implicit;
-  MaxIts = 1000;
-  Cfl0 = 1.0;
-  CflMax = 100.0;
-  Eps = 1.0e-6;  
+  MaxIts = 5000;
+  under CflLaw {
+     Cfl0 = 1.0e+2;
+     CflMax = 1.0e+2;
+  }
+    
   under Implicit {
-    Type = BackwardEuler;
+    //Type = ThreePointBackwardDifference;
+    Type = RungeKutta2;
+    MatrixVectorProduct = FiniteDifference;
     under Newton { 
-      MaxIts = 1; 
-      Eps = 1e-5;
+      MaxIts = 5; 
+      Eps = 1e-05;
       FailSafe = AlwaysOn;
       under LinearSolver {
         under NavierStokes {
           Type = Gmres;
           MaxIts = 100;
           KrylovVectors = 100;
-          Eps = 1e-5;
+          Eps = 1.0e-4;
           //Output = "stdout";
           under Preconditioner { 
-	    Type = Ras; 
+            Type = Ras; 
             Fill = 0; 
           }
         }
@@ -86,9 +95,9 @@ under Time {
   }
 }
 
+
 under EmbeddedFramework {
   TypeHalfRiemannProblem = Surrogate;
   RiemannNormal = Structure;  
 }
-
 

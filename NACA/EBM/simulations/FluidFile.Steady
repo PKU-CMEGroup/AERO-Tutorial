@@ -16,9 +16,8 @@ under Problem {
 }
 
 under Input {
-  Prefix = "../../data/";
-  GeometryPrefix = "OUTPUT";
-  EmbeddedSurface = "../sources/structure.top";
+  GeometryPrefix = "../data/fluidmodel";
+  EmbeddedSurface = "../sources/embeddedSurface.top";
 }
 
 under Output {

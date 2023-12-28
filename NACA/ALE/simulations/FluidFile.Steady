@@ -14,7 +14,7 @@ under Problem {
 }
 
 under Input {
-  GeometryPrefix = "../../data/OUTPUT";
+  GeometryPrefix = "../data/fluidmodel";
 }
 
 under Output {

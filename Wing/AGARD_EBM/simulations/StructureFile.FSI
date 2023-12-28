@@ -7,7 +7,7 @@ StructureElementsS
 AERO
 *C0 0.5 0.375
 A6 0.5 0.125
-MATCHER "../../data/OUTPUT.match.fem"
+MATCHER "../../data/fluidmodel.match.fem"
 ********************************************************************
 MASS
 ********************************************************************
@@ -31,7 +31,7 @@ MECH          0.25  0.50
 TIME          0.0   0.5e-4  0.1
 **************************************************************************
 OUTPUT
-GDISPLAC "postpro.FSI/structure.GDISPLAC" 100
+GDISPLAC "postpro.FSI/structure.GDISPLAC.xpost" 100
 **********************************************************************
 OUTPUT6
 GDISPLAC "postpro.FSI/structure.GDISPLAC.111" 1 111
