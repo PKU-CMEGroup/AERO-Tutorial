@@ -7,7 +7,7 @@ StructureElementsS
 AERO
 *C0 0.5 0.375
 A6 0.5 0.125
-MATCHER "../../data/fluidmodel.match.fem"
+MATCHER "../data/fluidmodel.match.fem"
 ********************************************************************
 MASS
 ********************************************************************

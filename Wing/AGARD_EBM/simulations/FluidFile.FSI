@@ -8,7 +8,7 @@ under Input {
   GeometryPrefix = "../data/fluidmodel";
   
   Matcher = "../data/fluidmodel.match.fluid";
-  EmbeddedSurface = "../sources/embeddedSurf.top";
+  EmbeddedSurface = "../sources/embeddedSurface.top";
   Solution = "references.Steady/Solution.bin";
 }
 

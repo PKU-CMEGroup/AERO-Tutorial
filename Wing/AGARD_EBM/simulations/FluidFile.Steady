@@ -7,7 +7,7 @@ under Problem {
 
 under Input {
   GeometryPrefix = "../data/fluidmodel";
-  EmbeddedSurface = "../sources/embeddedSurf.top";
+  EmbeddedSurface = "../sources/embeddedSurface.top";
 }
 
 

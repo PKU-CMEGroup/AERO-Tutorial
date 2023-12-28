@@ -4,8 +4,8 @@
 #SBATCH -o Sbatch.FSI.out
 #SBATCH --qos=low
 #SBATCH -J AGARD.EBM.FSI
-#SBATCH --nodes=1
-#SBATCH --ntasks=18
+#SBATCH --nodes=2
+#SBATCH --ntasks=36
 
 
 
