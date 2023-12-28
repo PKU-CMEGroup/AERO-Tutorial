@@ -19,8 +19,8 @@ under Output {
     Force = "../postpro.FSI/Force.out";
     Mach = "Mach.bin";
     Pressure = "Pressure.bin";
-    EmbeddedSurfaceDisplacement = "../postpro.Steady/EmbeddedSurfaceDisplacement.xpost";
-    EmbeddedSurfacePressureCoefficient = "../postpro.Steady/EmbeddedSurfacePressureCoefficient.xpost";
+    EmbeddedSurfaceDisplacement = "../postpro.FSI/EmbeddedSurfaceDisplacement.xpost";
+    EmbeddedSurfacePressureCoefficient = "../postpro.FSI/EmbeddedSurfacePressureCoefficient.xpost";
     Frequency = 100;
     PostprocessSides = 1;
   }
