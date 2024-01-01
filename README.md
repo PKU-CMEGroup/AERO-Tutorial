@@ -40,7 +40,7 @@ This software contributes major to fluid-structure interacting problems, and has
         * [三维翼形模拟：使用体贴体网格的非定常流仿真模拟]⚠️  
         关键词：Navier-Stokes方程，Vreman湍流模型大涡模拟，降阶模型
         
-    * [钢管的固体模拟](Cylinder/simulations/CYLINDER_README.ipynb)
+    * [空心圆柱的固体模拟](Cylinder/simulations/CYLINDER_README.ipynb)
         * 线性静态分析
         * 特征值分析
         * 弹性的非线性静态分析 
