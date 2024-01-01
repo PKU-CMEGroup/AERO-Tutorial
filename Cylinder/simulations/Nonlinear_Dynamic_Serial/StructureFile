@@ -1,0 +1,35 @@
+CONTROL
+Structure
+1
+StructureNodes
+StructureElements
+*
+DYNAMICS
+NEWMARK
+MECH 0.0 0.5
+TIME 0.0 8E-08 8e-6
+*
+NONLINEAR
+*
+PRESSURE
+1 12202 -676.0
+*
+CONTACTSURFACES
+1 1 1 0 0.01
+INCLUDE "../../sources/surfacetopo.include"
+*
+OUTPUT
+GDISPLAC "postpro/structure.GDISPLAC.xpost" 250
+STRESSVM "postpro/structure.STRESSVM.xpost" 250 upper
+STRAINVM "postpro/structure.STRAINVM.xpost" 250 upper
+GVELOCIT "postpro/structure.GVELOCIT.2450" 1 2450
+*
+INCLUDE "../../sources/StructureFile.include.btshell"
+*
+MATLAW
+2 J2Plasticity 1.014E+7 0.3 2.599E-4 3.909E4 9.3657E4
+*
+MATUSAGE
+1 10368 2
+*
+END

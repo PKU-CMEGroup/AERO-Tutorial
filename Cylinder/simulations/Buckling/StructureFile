@@ -1,0 +1,29 @@
+CONTROL
+Structure
+1
+StructureNodes
+StructureElements
+*
+STATICS
+SPARSE
+*
+PRESSURE
+1 12202 -676.0
+*
+EIGEN
+NEIGPA 6
+NSBSPV 12
+TOLEIG 1e-10
+SHIFT 1
+*ARPACK LA 4
+*
+BUCKLE
+GEPS
+INCLUDE "../../sources/structureFile.gdisplac6Modified"
+*
+OUTPUT
+GEIGENPA "postpro/structure.GEIGENPA.xpost" 1
+*
+INCLUDE "../../sources/StructureFile.include.andesshell"
+*
+END

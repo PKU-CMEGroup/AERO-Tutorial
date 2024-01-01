@@ -1,0 +1,21 @@
+CONTROL
+Structure
+1
+StructureNodes
+StructureElements
+***********************************************************
+STATICS
+SPARSE
+***********************************************************
+EIGEN
+NEIGPA 12
+NSBSPV 20
+TOLEIG 1e-10
+*ARPACK LA 3
+***********************************************************
+OUTPUT
+GEIGENPA "postpro/structure.GEIGENPA.xpost" 1
+***********************************************************
+INCLUDE "../../sources/StructureFile.include.andesshell"
+***********************************************************
+END

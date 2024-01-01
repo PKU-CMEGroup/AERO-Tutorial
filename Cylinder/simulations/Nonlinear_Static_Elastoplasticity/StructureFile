@@ -1,0 +1,31 @@
+CONTROL
+Structure
+1
+StructureNodes
+StructureElements
+*
+STATICS
+MUMPS
+*
+NONLINEAR
+*
+PRESSURE
+1 12202 -676.0
+*
+OUTPUT
+GDISPLAC "postpro/structure.GDISPLAC.xpost" 1
+STRESSVM "postpro/structure.STRESSVM.xpost" 1 upper
+STRAINVM "postpro/structure.STRAINVM.xpost" 1 upper
+*
+OUTPUT6
+GDISPLAC "postpro/structure.GDISPLAC6.xpost" 1
+*
+INCLUDE "../../sources/StructureFile.include.andesshell"
+*
+MATUSAGE
+1 10368 2
+*
+MATLAW
+2 J2Plasticity 1.014E+7 0.3 2.599E-4 3.909E4 9.3657E4 
+*
+END

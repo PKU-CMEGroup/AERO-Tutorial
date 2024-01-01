@@ -1,0 +1,40 @@
+CONTROL
+Structure
+1
+StructureNodes
+StructureElements
+*
+BINARY
+binaryoutput on 
+decomposition "../../data/structuremodel"
+cpumap        "../../data/structuremodel.4cpu"
+global        "../../data/structuremodel.con"
+*
+DYNAMICS
+NEWMARK
+MECH 0.0 0.5
+TIME 0.0 8E-08 8e-6
+*
+NONLINEAR
+*
+PRESSURE
+1 12202 -676.0
+*
+CONTACTSURFACES
+1 1 1 0 0.01
+INCLUDE "../../sources/surfacetopo.include"
+*
+OUTPUT
+GDISPLAC "results/structure.GDISPLAC" 250
+STRESSVM "results/structure.STRESSVM" 250 upper
+STRAINVM "results/structure.STRAINVM" 250 upper
+GVELOCIT "postpro/structure.GVELOCIT.2450" 1 2450
+*
+INCLUDE "../../sources/StructureFile.include.btshell"
+*
+MATLAW
+2 J2Plasticity 1.014e7 0.3 2.599e-4 3.909e4 9.3657e4
+MATUSAGE
+1 10368 2
+*
+END
