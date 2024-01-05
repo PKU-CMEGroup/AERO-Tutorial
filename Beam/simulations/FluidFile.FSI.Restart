@@ -44,18 +44,6 @@ under AdaptiveMeshRefinement {
             Radius = 45;
       }
   }
-/*
-  under SelectionCriterion[0] {
-    Type = Fixes;
-    under FixesCriterion {
-    DoublyIntersectedEdgeFix = On;
-    }
-    MinimumEdgeLength = 5e-3;
-    NumLevels = 10;
-    PreRefine = On;
-  }
-*/
-
   Mode = NonDimensional; 
   RecomputeWallDistance = 2;  
   BisectionStrategy = Isotropic;
@@ -69,10 +57,7 @@ under AdaptiveMeshRefinement {
 }
 
 under Input {
-  Connectivity = "references.FSI/fluidmodel.con";
-  Geometry = "references.FSI/fluidmodel.msh";
-  Decomposition = "references.FSI/fluidmodel.dec";
-  CpuMap = "../data/fluidmodel.64cpu";
+  GeometryPrefix = "references.FSI/fluidmodel";
   Matcher = "../data/fluidmodel.match.fluid";
   EmbeddedSurface = "../sources/embeddedSurface.top";
  
@@ -89,8 +74,8 @@ under Output {
     PostprocessSides = 1;
     Prefix   = "results.FSI/";
     Mach  = "Mach.bin";
-    EmbeddedSurfaceDisplacement = "../postpro.Unsteady/EmbeddedSurfaceDisplacement.xpost";
-    LiftandDrag  = "../postpro.Unsteady/LiftandDrag.out";
+    EmbeddedSurfaceDisplacement = "../postpro.FSI/EmbeddedSurfaceDisplacement.xpost";
+    LiftandDrag  = "../postpro.FSI/LiftandDrag.out";
     Frequency = 1000;
   }
   under Restart {
@@ -115,25 +100,15 @@ under Equations {
   under ViscosityModel {
     Type = Sutherland;
   }
-
   under TurbulenceClosure {
-//    Type = TurbulenceModel;
-//    under TurbulenceModel {
-//      Type = SpalartAllmaras;
-//      under WallDistanceMethod {
-//        Type = Iterative;
-//        MaxIts = 30;
-//      }
-//    }
-
-      Type = LESModel;
-      under LESModel{
-        Type = Vreman;
-        under Vreman {
-           Cs = 0.07;
-        }
-        Delta = Volume;
+    Type = LESModel;
+    under LESModel{
+      Type = Vreman;
+      under Vreman {
+         Cs = 0.07;
       }
+      Delta = Volume;
+    }
   }
 }
 
@@ -146,11 +121,10 @@ under BoundaryConditions {
     Pressure = 40000;
     Alpha   = 0.0;
     Beta    = 0.0;
-    //NuTilde = 0.0046531;
   }
   under Wall {
     Type        = Adiabatic;
-    Integration = Full;//WallFunction;//Full;
+    Integration = Full;
   }  
 }
 
@@ -182,7 +156,7 @@ under Time {
       CflMax = 10.0;
  }
   under Implicit {
-    Type = BackwardEuler;
+    Type = RungeKutta2;
     MatrixVectorProduct = FiniteDifference;
     TurbulenceModelCoupling = Weak;
     under Newton {
@@ -219,5 +193,4 @@ under Time {
 under EmbeddedFramework {
   TypeHalfRiemannProblem = Surrogate;
   RiemannNormal = Structure;  
-  //TurbulenceModelGhostTreatment = Constant;
 }

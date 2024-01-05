@@ -37,4 +37,4 @@ do
   xp2exo postpro.FSI/fluidmodel.top.$i postpro.FSI/fluidmodel.e-s.$i postpro.FSI/fluidmodel.top.$i.dec postpro.FSI/Mach.$i.xpost
 done
 xp2exo ../sources/embeddedSurface.top  postpro.FSI/EmbeddedSurfaceDisplacement.exo  postpro.FSI/EmbeddedSurfaceDisplacement.xpost
-xp2exo ../sources/Structure.top        postpro.FSI/structure_solution.FSI.exo results.FSI/structure.GDISPLAC
+xp2exo ../sources/Structure.top        postpro.FSI/structure_solution.FSI.exo results.FSI/structure.GDISPLAC.xpost

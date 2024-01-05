@@ -6,7 +6,6 @@ under Problem {
 
 
 under AdaptiveMeshRefinement {
-  
  under SelectionCriterion[0] {
     Type = WallProximity;
     under WallProximityCriterion {
@@ -57,10 +56,7 @@ under AdaptiveMeshRefinement {
 
 
 under Input {
-  Connectivity = "references.APriori/fluidmodel.con";
-  Geometry = "references.APriori/fluidmodel.msh";
-  Decomposition = "references.APriori/fluidmodel.dec";
-  CpuMap = "../data/fluidmodel.64cpu";
+  GeometryPrefix = "references.APriori/fluidmodel";
   EmbeddedSurface = "../sources/embeddedSurface.top";
 }
                                                                                                  
@@ -96,15 +92,6 @@ under Equations {
   }
 
   under TurbulenceClosure {
-//    Type = TurbulenceModel;
-//    under TurbulenceModel {
-//      Type = SpalartAllmaras;
-//      under WallDistanceMethod {
-//        Type = Iterative;
-//        MaxIts = 30;
-//      }
-//    }
-
       Type = LESModel;
       under LESModel{
         Type = Vreman;
@@ -153,7 +140,7 @@ under Space {
 under Time {
   Type = Implicit;
   MaxIts = 500000;
-  MaxTime = 0.2;
+  MaxTime = 0.1;
   under CflLaw{
       Strategy = Fixed;
       Cfl0 = 20.0;
@@ -199,6 +186,5 @@ under Time {
 under EmbeddedFramework {
   TypeHalfRiemannProblem = Surrogate;
   RiemannNormal = Structure;  
-  //TurbulenceModelGhostTreatment = Constant;
 }
 

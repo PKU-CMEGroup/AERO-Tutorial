@@ -44,17 +44,6 @@ under AdaptiveMeshRefinement {
             Radius = 45;
       }
   }
-/*
-  under SelectionCriterion[0] {
-    Type = Fixes;
-    under FixesCriterion {
-    DoublyIntersectedEdgeFix = On;
-    }
-    MinimumEdgeLength = 5e-3;
-    NumLevels = 10;
-    PreRefine = On;
-  }
-*/
 
   Mode = NonDimensional; 
   RecomputeWallDistance = 2;  
@@ -69,10 +58,7 @@ under AdaptiveMeshRefinement {
 }
 
 under Input {
-  Connectivity = "references.Unsteady/fluidmodel.con";
-  Geometry = "references.Unsteady/fluidmodel.msh";
-  Decomposition = "references.Unsteady/fluidmodel.dec";
-  CpuMap = "../data/fluidmodel.64cpu";
+  GeometryPrefix = "references.Unsteady/fluidmodel";
   Matcher = "../data/fluidmodel.match.fluid";
   EmbeddedSurface = "../sources/embeddedSurface.top";
  
@@ -90,8 +76,8 @@ under Output {
     Prefix   = "results.FSI/";
     Mach  = "Mach.bin";
     EmbeddedSurfaceDisplacement = "../postpro.FSI/EmbeddedSurfaceDisplacement.xpost";
-    LiftandDrag  = "../postpro.Unsteady/LiftandDrag.out";
-    Frequency = 100;
+    LiftandDrag  = "../postpro.FSI/LiftandDrag.out";
+    Frequency = 1000;
   }
   under Restart {
     Prefix = "references.FSI/"; 
@@ -115,25 +101,15 @@ under Equations {
   under ViscosityModel {
     Type = Sutherland;
   }
-
   under TurbulenceClosure {
-//    Type = TurbulenceModel;
-//    under TurbulenceModel {
-//      Type = SpalartAllmaras;
-//      under WallDistanceMethod {
-//        Type = Iterative;
-//        MaxIts = 30;
-//      }
-//    }
-
-      Type = LESModel;
-      under LESModel{
-        Type = Vreman;
-        under Vreman {
-           Cs = 0.07;
-        }
-        Delta = Volume;
+    Type = LESModel;
+    under LESModel{
+      Type = Vreman;
+      under Vreman {
+        Cs = 0.07;
       }
+      Delta = Volume;
+    }
   }
 }
 
@@ -180,7 +156,7 @@ under Time {
       CflMax = 10.0;
  }
   under Implicit {
-    //Type = RungeKutta2;//BackwardEuler;
+    Type = RungeKutta2;
     MatrixVectorProduct = FiniteDifference;
     TurbulenceModelCoupling = Weak;
     under Newton {
@@ -217,6 +193,4 @@ under Time {
 under EmbeddedFramework {
   TypeHalfRiemannProblem = Surrogate;
   RiemannNormal = Structure;
-  //GhostPointPopulation = Local;  
-  //TurbulenceModelGhostTreatment = Constant;
 }

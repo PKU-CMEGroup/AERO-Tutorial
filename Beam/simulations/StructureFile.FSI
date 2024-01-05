@@ -15,15 +15,15 @@ MECH 0.25 0.5 0.5 0.5
 TIME 0.0 2.0e-6 1.0e-2
 **************************************************************************
 AERO
-A6
+A6 0.5 0.125
 Matcher "../data/fluidmodel.match.fem"
 **************************************************************************
 NONLINEAR
-maxit 10
-failsafe
+MAXIT 10
+FAILSAFE
 **************************************************************************
 OUTPUT
-gdisplac "results.FSI/structure.GDISPLAC" 100
+GDISPLAC "results.FSI/structure.GDISPLAC.xpost" 1000
 ***************************************************************************
 RESTART
 "references.FSI/RESTART_FEM" 1000

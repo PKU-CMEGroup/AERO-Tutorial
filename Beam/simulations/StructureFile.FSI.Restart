@@ -19,14 +19,14 @@ A6
 Matcher "../data/fluidmodel.match.fem"
 **************************************************************************
 NONLINEAR
-maxit 10
-failsafe
+MAXIT 10
+FAILSAFE
 **************************************************************************
 OUTPUT
-gdisplac "results.FSI/structure.GDISPLAC" 100
+GDISPLAC "results.FSI/structure.GDISPLAC.xpost 1000
 ***************************************************************************
 * If you need restart again, you can for example, change the suffix
-* "references.FSI/RESTART_FEM.2" 1000
+* "references.FSI/RESTART_FEM" 1000
 * "references.FSI/RESTART_FEM" ".3"
 ***************************************************************************
 RESTART
