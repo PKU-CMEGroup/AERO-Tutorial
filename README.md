@@ -37,7 +37,7 @@ This software contributes major to fluid-structure interacting problems, and has
         * [二维翼型模拟：使用浸入边界方法的无黏定常流仿真模拟](NACA/EBM/simulations/NACA_EBM_STEADY_README.ipynb)  
         关键词：Gmsh网格生成，前处理，后处理，Paraview可视化，Euler方程
         
-        * [三维翼形模拟：使用体贴体网格的非定常流仿真模拟]⚠️  
+        * 三维翼形模拟：使用体贴体网格的非定常流仿真模拟⚠️  
         关键词：Navier-Stokes方程，Vreman湍流模型大涡模拟，降阶模型
         
     * [空心圆柱的固体模拟](Cylinder/simulations/CYLINDER_README.ipynb)
@@ -58,7 +58,10 @@ This software contributes major to fluid-structure interacting problems, and has
         关键词：浸入边界方法（Embedded Boundary methods），网格生成，前处理，后处理
         
     * [软管的流固耦合模拟](Beam/simulations/BEAM_EBM_FSI_README.ipynb)<br>
-    关键词：浸入边界方法（Embedded Boundary methods），网格生成，自适应网格，前处理，后处理
+    关键词：浸入边界方法（Embedded Boundary methods），网格生成，自适应网格，重启模拟，前处理，后处理
+    
+    * 水下内爆模拟⚠️<br>
+    关键词：多相流，浸入边界方法(Embedded Boundary methods)，水平集方法（Level set method），单元删除（Element deletion）
    
 * 应用实例 ⚠️
         
