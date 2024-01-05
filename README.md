@@ -28,13 +28,17 @@ This software contributes major to fluid-structure interacting problems, and has
 
 * 基本教程
     * 翼型的流体模拟
-        * [二维翼型模拟：使用体贴体网格的定常流仿真模拟](NACA/ALE/simulations/NACA_ALE_STEADY_README.ipynb)<br>关键词：Gmsh网格生成，前处理，后处理，Paraview可视化，Navier-Stokes方程，Spalart-Allmaras湍流模型
+        * [二维翼型模拟：使用体贴体网格的定常流仿真模拟](NACA/ALE/simulations/NACA_ALE_STEADY_README.ipynb)  
+        关键词：Gmsh网格生成，前处理，后处理，Paraview可视化，Navier-Stokes方程，Spalart-Allmaras湍流模型
             
-        * [二维翼型模拟：使用体贴体网格的强迫运动的流仿真模拟](NACA/ALE/simulations/NACA_ALE_FORCED_README.ipynb)<br>关键词：重启模拟，Navier-Stokes方程，Spalart-Allmaras湍流模型，起伏运动
+        * [二维翼型模拟：使用体贴体网格的强迫运动的流仿真模拟](NACA/ALE/simulations/NACA_ALE_FORCED_README.ipynb)  
+        关键词：重启模拟，Navier-Stokes方程，Spalart-Allmaras湍流模型，起伏运动
         
-        * [二维翼型模拟：使用浸入边界方法的无黏定常流仿真模拟](NACA/EBM/simulations/NACA_EBM_STEADY_README.ipynb)<br>关键词：浸入边界方法（Embedded boundary methods），Gmsh网格生成，前处理，后处理，Paraview可视化，Euler方程
+        * [二维翼型模拟：使用浸入边界方法的无黏定常流仿真模拟](NACA/EBM/simulations/NACA_EBM_STEADY_README.ipynb)  
+        关键词：Gmsh网格生成，前处理，后处理，Paraview可视化，Euler方程
         
-        * [三维翼形模拟：使用体贴体网格的非定常流仿真模拟]⚠️<br>关键词：Navier-Stokes方程，Vreman湍流模型大涡模拟，降阶模型
+        * [三维翼形模拟：使用体贴体网格的非定常流仿真模拟]⚠️  
+        关键词：Navier-Stokes方程，Vreman湍流模型大涡模拟，降阶模型
         
     * [空心圆柱的固体模拟](Cylinder/simulations/CYLINDER_README.ipynb)
         * 线性静态分析
@@ -47,12 +51,15 @@ This software contributes major to fluid-structure interacting problems, and has
   
         
     * 机翼的流固耦合模拟    
-        * [三维机翼模拟：使用体贴体网格的无粘流固耦合仿真模拟](Wing/AGARD_ALE/simulations/AGARD_ALE_FSI_README.ipynb)<br>关键词：任意拉格朗日-欧拉方法（Arbitrary Lagrangian–Eulerian methods），前处理，后处理
+        * [三维机翼模拟：使用体贴体网格的无粘流固耦合仿真模拟](Wing/AGARD_ALE/simulations/AGARD_ALE_FSI_README.ipynb)  
+        关键词：任意拉格朗日-欧拉方法（Arbitrary Lagrangian–Eulerian methods），前处理，后处理
         
-        * [三维机翼模拟：使用浸入边界方法的无粘流固耦合仿真模拟](Wing/AGARD_EBM/simulations/AGARD_EBM_FSI_README.ipynb)<br>关键词：浸入边界方法（Embedded boundary methods），网格生成，前处理，后处理
+        * [三维机翼模拟：使用浸入边界方法的无粘流固耦合仿真模拟](Wing/AGARD_EBM/simulations/AGARD_EBM_FSI_README.ipynb)  
+        关键词：浸入边界方法（Embedded Boundary methods），网格生成，前处理，后处理
         
-    * [软管的流固耦合模拟](Beam/simulations/BEAM_EBM_FSI_README.ipynb)<br>关键词：浸入边界方法（Embedded boundary methods），网格生成，自适应网格（Adaptive mesh refinement），重启模拟，前处理，后处理
-           
+    * [软管的流固耦合模拟](Beam/simulations/BEAM_EBM_FSI_README.ipynb)
+    关键词：浸入边界方法（Embedded Boundary methods），网格生成，自适应网格，前处理，后处理
+   
 * 应用实例 ⚠️
         
         
