@@ -57,7 +57,7 @@ This software contributes major to fluid-structure interacting problems, and has
         * [三维机翼模拟：使用浸入边界方法的无粘流固耦合仿真模拟](Wing/AGARD_EBM/simulations/AGARD_EBM_FSI_README.ipynb)  
         关键词：浸入边界方法（Embedded Boundary methods），网格生成，前处理，后处理
         
-    * [软管的流固耦合模拟](Beam/simulations/BEAM_EBM_FSI_README.ipynb)
+    * [软管的流固耦合模拟](Beam/simulations/BEAM_EBM_FSI_README.ipynb)<br>
     关键词：浸入边界方法（Embedded Boundary methods），网格生成，自适应网格，前处理，后处理
    
 * 应用实例 ⚠️
