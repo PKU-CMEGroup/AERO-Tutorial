@@ -23,7 +23,7 @@ MAXIT 10
 FAILSAFE
 **************************************************************************
 OUTPUT
-GDISPLAC "results.FSI/structure.GDISPLAC.xpost 1000
+GDISPLAC "results.FSI/structure.GDISPLAC.xpost" 1000
 ***************************************************************************
 * If you need restart again, you can for example, change the suffix
 * "references.FSI/RESTART_FEM" 1000
