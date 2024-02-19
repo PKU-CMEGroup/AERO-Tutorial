@@ -289,5 +289,83 @@ def uniform_exponential_stretch(xa, xb, nab, Xa, Xb, ra, rb):
             dxb_p *= rb
             xx_b.append(xb_p)
     
-
     return np.concatenate((np.array(xx_a), xx_in, np.array(xx_b)))
+
+
+def geomspace(x0, xn, dx0, includeX0, type, ratio):
+    '''
+    :param x0: float, start point
+    :param xn: float, end point (end point is beyond xn)
+    :param dx0: float, increment at x0
+    :param includeX0, bool, should the array include x0 or not
+    :param type: string 'num' or 'dist'
+    :param ratio: list of float
+           [float, int; float, int, float ...]
+           [float float; float, float; , float ...]
+    :return: xx
+           ratio has n pairs(ci, yi), y of the last pair is optional
+           xx array has n segments, in each segment the increment dx
+           is a geometric sequence of ratio ci
+           if type = 'num', each segment has yi points,
+           the ratio is interpreted as c1, n1, c2, n2 ...
+           the incremental array is dx, dx*c1, dx*c1^2 ... dx*c1^(n1-1),
+           dx*c1^(n1-1)*c2, dx*c1^(n1-1)*c2^2 ...dx*c1^(n1-1)*c2^(n2-1)...
+           if type = 'dist', each segment has length > yi - yi-1
+           the ratio is interpreted as c1, n1, c2, n2 ...
+           the incremental array is dx, dx*c1, dx*c1^2 ... dx*c1^(n1-1),
+           dx*c1^(n1-1)*c2, dx*c1^(n1-1)*c2^2 ...dx*c1^(n1-1)*c2^(n2-1)...
+           ni in this case is computed based on yi
+    '''
+
+    n = (len(ratio) + 1)//2
+    xx = [x0] if includeX0 else []
+
+    if(type == 'num'):
+        x, dx = x0, dx0
+        if len(ratio) % 2:
+            ratio.append(int(1e12))#append any large number
+        for i in range(n):
+            for j in range(ratio[2*i + 1]):
+                x = x + dx
+                xx.append(x)
+                dx *= ratio[2 * i]
+                if(x0 < xn and x > xn) or (x0 > xn and x < xn):
+                    break
+
+    if(type == 'dist'):
+        x, dx = x0, dx0
+        if len(ratio) % 2:
+            ratio.append(xn)
+        for i in range(n):
+            xc = x0 + ratio[2*i + 1]
+            while (x0 < xc and x < xc) or (x0 > xc and x > xc):
+                x = x + dx
+                xx.append(x)
+                dx *= ratio[2 * i]
+
+
+
+    return xx
+
+def symmetry(xx, type):
+    '''
+    :param xx: array {x0, x1, x2}
+    :param type: string, 'left' or 'right'
+    :return: mirror the array to left or right
+             if type = 'left' xx = {2x0 - x2, 2x0 - x1, x0, x1, x2}
+             if type = 'right' xx = {x0, x1, x2, 2x2 - x1, 2x2 - x0}
+    '''
+
+    n = len(xx)
+
+    if(type == 'left'):
+        xx_temp = []
+        xc = xx[0]
+        for i in range(n - 1, 0, -1):
+            xx_temp.append(2*xc - xx[n - 1 - i])
+        xx = xx_temp + xx
+    if(type == 'right'):
+        xc = xx[-1]
+        for i in range(n - 1):
+            xx.append(2*xc - xx[n - 1 - i - 1])
+    return xx
