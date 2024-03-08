@@ -1,0 +1,156 @@
+under Problem {
+  Type   = UnsteadyAeroelastic;
+  Mode   = Dimensional;
+  Prec   = NonPreconditioned;
+  Framework = Embedded;
+}
+
+
+under Input {
+  Connectivity = "references.Capsule/fluidmodel.con";
+  Geometry = "references.Capsule/fluidmodel.msh";
+  Decomposition = "references.Capsule/fluidmodel.dec";
+  CpuMap = "../data/fluidmodel.200cpu";
+  Matcher = "../data/fluidmodel.match.fluid";
+  EmbeddedSurface = "../sources/embeddedSurface.top";
+}
+                                                                                                 
+under Output {
+  under Postpro {
+    PostprocessSides = 2;
+    Frequency = 0;
+  }
+  
+ under Restart {
+    Frequency = 0;
+    Prefix   = "references.Pingpong/";
+    Solution = "Solution.bin";
+    RestartData = "Restart.data";
+    Position = "Position.data";
+    EmbeddedPosition = "EmbeddedPosition.data";
+  }
+}
+
+under Equations {
+  Type = NavierStokes;
+  under FluidModel[0] {
+    Fluid = PerfectGas;
+    under GasModel {
+      SpecificHeatRatio = 1.33;
+      IdealGasConstant = 188.4;
+    }
+  }
+  under ViscosityModel {
+    Type = Sutherland;
+    SutherlandConstant = 1.572085931e-6;
+    SutherlandReferenceTemperature = 240;
+    ViscosityRatio = 1000.0;
+  }
+   under TurbulenceClosure {
+    Type = LESModel;
+    under LESModel{
+      Type = Vreman;
+     
+      under Vreman {
+         Cs = 0.07;
+      }
+      Delta = Volume;
+    }
+  }
+}
+
+under Surfaces {
+  under SurfaceData[1] {
+    BoundaryConditionID = 0;
+  }
+
+  under SurfaceData[2] {
+    BoundaryConditionID = 0;
+  }
+
+}
+
+under BoundaryConditions {
+  under Inlet {
+    Type    = External;
+    Mach    = 1.8;
+    Density = 0.0067;
+    Pressure = 260.0;
+    Alpha   = 90.0;
+    Beta    = 0.0;
+  }
+  under Wall {
+    Type        = Adiabatic;
+    Integration = Full;
+  }  
+  under BoundaryData[0] {
+    Type = PorousWall;
+    Porosity = 0.08;
+  }
+}
+
+under Space {
+  under NavierStokes {
+    Flux              = Roe;
+    Reconstruction    = Linear;
+    AdvectiveOperator = FiniteVolume;
+    Limiter           = VanAlbada;
+    Eps = 0.1;
+    Gradient          = LeastSquares;
+    Beta              = 0.33333333333333;
+    Gamma             = 1.0;
+  }
+  under Boundaries {
+    Type = StegerWarming;
+  }
+}
+
+under Time {
+  Type = Implicit;
+  MaxIts = 10;
+  under CflLaw{
+      Strategy = Fixed;
+      Cfl0 = 10.0;
+      CflMax = 10.0;
+ }
+  under Implicit {
+    MatrixVectorProduct = FiniteDifference;
+    TurbulenceModelCoupling = Weak;
+    under Newton {
+      MaxIts = 5;
+      Eps = 0.001;
+      FailSafe = AlwaysOn;
+      under LinearSolver {
+        under NavierStokes {
+          Type = Gmres;
+          MaxIts = 150;
+          KrylovVectors = 150;
+          Eps = 0.01;
+          under Preconditioner {
+            Type = Ras;
+            Fill = 0;
+          }
+        }
+        under TurbulenceModel {
+          Type = Gmres;
+          MaxIts = 50;
+          KrylovVectors = 50;
+          Eps = 0.01;
+          under Preconditioner {
+            Type = Ras;
+            Fill = 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+under EmbeddedFramework {
+  TypeHalfRiemannProblem = Surrogate;
+  RiemannNormal = Fluid;  
+}
+
+

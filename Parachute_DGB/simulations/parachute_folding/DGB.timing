@@ -1,0 +1,107 @@
+
+*******************************************************************************
+ ... Non-Linear Dynamic Problem Information ... 
+*******************************************************************************
+
+1. Number of Nodes                         =         182554
+
+2. Number of Elements                      =         339184
+
+3. Number of Degrees of Freedom            =        1095324
+         Number of Constrained Dofs        =              6
+         Number of Unconstrained Dofs      =        1095318
+
+4. Number of Applied Loads                 =              0
+
+5. Number of Output Files                  =              4
+
+6. Renumbering                             =           None
+
+*******************************************************************************
+ ... Solver Information ... 
+*******************************************************************************
+
+1. Diagonal
+
+*******************************************************************************
+ ... Timing Statistics for 96 Threads and 96 Subdomains ...
+*******************************************************************************
+
+1. Total Read Input Files              time:       12.29673 s     125092.125 Mb
+         Read Mesh                     time:       11.75618 s
+         Read Mesh Partition           time:        0.10094 s
+
+2. Total Preprocessing                 time:        0.92305 s       1439.250 Mb
+         Process Input Data            time:        0.36428 s
+         Make Subdomains               time:        0.00568 s
+         Distribute BCs                time:        0.02542 s
+         Make Connectivities           time:        0.01210 s
+         Make Interface                time:        0.00499 s
+         Make Internal Information     time:        0.00002 s
+         Make Geometric Node States    time:        0.00106 s
+
+3. Total Matrix Processing             time:        0.88668 s          0.000 Mb
+         Construct Sparse Matrices     time:        0.00848 s
+         Form Element Matrices         time:        0.79914 s
+         Assemble Element Matrices     time:        0.03087 s
+
+4. Total RHS Processing                time:        0.00006 s          0.000 Mb
+
+5. Total Solver                        time:        0.44631 s          0.000 Mb
+         Update States                 time:        0.00000 s
+         TD Enforcement                time:        0.01157 s
+              detection                time:        0.00903 s
+              enforcement              time:        0.00023 s
+              surface update           time:        0.00207 s
+
+6. Write Output Files                  time:        2.01736 s          2.795 Mb
+
+TOTAL SIMULATION (1+2+3+4+5+6)         time:       16.48970 s     126534.170 Mb
+
+*******************************************************************************
+ ... Detailed CPU Statistics (Seconds) 
+*******************************************************************************
+
+                                             minimum      average      maximum
+
+1. Total Read Input Files             :      11.7841      11.9008      12.2967
+
+2. Total Preprocessing                :       0.7472       0.8439       0.9230
+         Process Input Data           :       0.3295       0.3582       0.3849
+         Make Subdomains              :       0.0022       0.0038       0.0057
+         Distribute BCs               :       0.0217       0.0249       0.0263
+         Make Connectivities          :       0.0104       0.0121       0.0129
+         Make Interface               :       0.0050       0.1234       0.1915
+         Make Internal Information    :       0.0000       0.0000       0.0000
+
+3. Total Matrix Processing            :       0.0000       0.0000       0.0000
+
+4. Total RHS Processing               :       0.0000       0.0000       0.0000
+
+5. Total Solver                       :       0.0002       0.0002       0.0002
+
+6. Write Output Files                 :       1.9993       1.9993       1.9993
+
+TOTAL SIMULATION (1+2+3+4+5+6)        :      14.5308      14.7442      15.2193
+
+*******************************************************************************
+ ...  Detailed Memory Statistics (Megabytes)
+*******************************************************************************
+
+                                             minimum      average      maximum
+
+1. Total Read Input Files             :    1303.0430    1303.0430    1303.0430
+
+2. Total Preprocessing                :      14.9922      14.9922      14.9922
+
+3. Total Matrix Processing            :       0.0000       0.0000       0.0000
+
+4. Total RHS Processing               :       0.0000       0.0000       0.0000
+
+5. Total Solver                       :       0.0000       0.0000       0.0000
+
+6. Write Output Files                 :       1.8145       2.4316       3.2598
+
+TOTAL SIMULATION (1+2+3+4+5+6)        :    1319.8496    1320.4668    1321.2949
+
+*******************************************************************************

@@ -1,0 +1,37 @@
+初始文件包括：
+四边形网格的降落伞网格 parachute_coarse.quad 
+和三角形网格的降落伞网格 parachute_coarse.tria
+里面有网格格点，有限元（TOPOLOGY），对于梁单元有属性（ATTRIBUTES）、局部坐标系（EFRAMES）
+对于壳单元有属性（ATTRIBUTES）。
+
+第一步，使用python文件
+python foldParachute.py  
+加密网格生成降落伞网格以及初始位移（降落伞的折叠） mesh_Structural.surfacetop.tria
+接触碰撞面 mesh_Structural.top.tria
+
+第二步，清理降落伞网格 mesh_Structural.surfacetop.tria，删掉不需要部分，
+比如盘状部分通气孔里的线，和布边缘、里面的线
+只保留降落伞部分 parachute_emb_mesh.top
+只保留降落伞和悬挂线部分 parachute_susp_line_emb_mesh.top
+
+第三步，用gmsh 以及网格 capsule.geo 生成探测器网格 capsule.top
+
+第四步，使用python文件
+python computeEmbeddedSurf.py
+生成浸入边界 embeddedSurface.top
+
+第五步，使用cpp文件生成固体网格划分文件
+	g++ -std=c++11 -O2 dec.cpp -o dec
+	g++ -std=c++11 -O2 mod.cpp -o mod
+生成 dec 和 mod
+    ./dec
+生成网格划分文件 DGB.cusDec.96
+    ./mod
+生成碰撞面文件 MasterSurfaceTopology.include  和  SlaveSurfaceTopology.include
+
+
+第六步，移到 sources 文件夹
+mesh_Structural.top.tria => StructureFile.include
+embeddedSurface.top => embeddedSurface.top
+DGB.cusDec.96 => SowerFile.optDec
+mesh_Structural.surfacetop.tria 删掉所有SURFACETOPO行，把第一行改成SURFACETOPO 163 => SelfContactSurfaceTopology.include

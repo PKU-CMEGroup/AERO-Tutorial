@@ -1,0 +1,16 @@
+*********************
+** DGB parachute model in Aero-S - v2
+** 2017-09-13 
+** JPL Limited Release to the following people ONLY: Charbel Farhat, Phil Avery, Sebastian Johannes Grimberg, Zhengyu Daniel Huang, Wanli He, and Johanna Ehlers 
+*********************
+* All Properties in SI
+CONTROL
+"DGB"
+1
+"nodeset"
+"elemset"
+***************************************************************************
+INCLUDE "./mesh_Structural.top.tria"
+***************************************************************************
+*
+END

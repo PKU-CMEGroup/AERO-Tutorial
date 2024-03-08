@@ -1,0 +1,27 @@
+#!/bin/bash
+
+#SBATCH --job-name=Parachute3D.multipliers
+
+#SBATCH --output=Parachute3D.output
+
+#SBATCH --error=Parachute3D.err
+
+#SBATCH --time=48:00:00
+
+#SBATCH --nodes=2
+
+#SBATCH --ntasks-per-node=16 
+
+AEROS_EXECUTABLE=/home/pavery/gcc/5.2/openmpi-1.8.3/FEM/bin/aeros
+
+module load openmpi/1.8.3/gcc 
+
+PBS_O_WORKDIR='/scratch/users/zhengyuh/AMRTests/PID3D.3/3d.multiplier.stretch_1'
+export PBS_O_WORKDIR
+cd $PBS_O_WORKDIR
+
+# Run
+cmd="mpirun -np 32 $AEROS_EXECUTABLE -d DGB.optDec.32 StructureFile.restart"
+
+$cmd >& $PBS_O_WORKDIR/log.out
+

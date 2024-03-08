@@ -1,0 +1,192 @@
+under Problem {
+  Type   = Unsteady;
+  Mode   = Dimensional;
+  Prec   = NonPreconditioned;
+  Framework = Embedded;
+}
+
+under AdaptiveMeshRefinement {
+  under SelectionCriterion[0] {
+      Type = Hessian;
+      under HessianCriterion {
+      SensorType = Velocity;
+      Threshold = 4.e-2;
+       HessianConstruction = LeastSquares;
+       CoarseningThreshold = 8e-3;
+    }
+    PreRefine = Off;
+    MinimumEdgeLength = 1e-1;
+    NumLevels = 1;
+  }
+
+ under RefinementDomain {
+      Type = Sphere;
+      under Sphere {
+      	    Center_x = 0.0;
+            Center_y = 0.0;
+            Center_z = 30.00;
+            Radius = 45;
+      }
+  }
+
+  Mode = NonDimensional; 
+  RecomputeWallDistance = 2;  
+  BisectionStrategy = Isotropic;
+  MaximumRefinementIterations = 1000;
+  Eps = 1e-3;
+  MaximumCoarseningIterations = 1000;
+  BalancingFrequency = 50;
+  ItrFactor = 1000.0;
+  UseUnsteadyStrategy = 1;
+  Frequency = 100;
+}
+
+
+under Input {
+  Connectivity = "references.APriori/fluidmodel.con";
+  Geometry = "references.APriori/fluidmodel.msh";
+  Decomposition = "references.APriori/fluidmodel.dec";
+  CpuMap = "../data/fluidmodel.200cpu";
+  EmbeddedSurface = "../sources/capsule.top";
+  
+}
+                                                                                                 
+under Output {
+  under Postpro {
+    PostprocessSides = 2;
+    Prefix   = "results.Capsule/";
+    Mach = "Mach";
+    EmbeddedSurfaceDisplacement = "embeddedsurfacedisplacement";
+    Frequency = 1000;
+  }
+  under Restart {
+    Frequency = 1000;
+    Prefix   = "references.Capsule/";
+    Solution = "Solution.bin";
+    RestartData = "Restart.data";
+    Position = "Position.data";
+    EmbeddedPosition = "EmbeddedPosition.data";
+  }
+}
+
+under Equations {
+  Type = NavierStokes;
+  under FluidModel[0] {
+    Fluid = PerfectGas;
+    under GasModel {
+      SpecificHeatRatio = 1.33;
+      IdealGasConstant = 188.4;
+    }
+  }
+  under ViscosityModel {
+    Type = Sutherland;
+    SutherlandConstant = 1.572085931e-6;
+    SutherlandReferenceTemperature = 240;
+  }
+
+  under TurbulenceClosure {
+    Type = LESModel;
+    under LESModel{
+      Type = Vreman;
+
+      under Vreman {
+         Cs = 0.07;
+      }
+      Delta = Volume;
+    }
+  }
+}
+
+
+under Surfaces {
+  under SurfaceData[1] {
+    BoundaryConditionID = 0;
+  }
+
+  under SurfaceData[2] {
+    BoundaryConditionID = 0;
+  }
+
+}
+
+under BoundaryConditions {
+  under Inlet {
+    Type    = External;
+    Mach    = 1.8;
+    Density = 0.0067;
+    Pressure = 260.0;
+    Alpha   = 90.0;
+    Beta    = 0.0;
+  }
+  under Wall {
+    Type        = Adiabatic;
+    Integration = Full;
+  }  
+  under BoundaryData[0] {
+    Type = PorousWall;
+    Porosity = 0.08;
+  }
+}
+
+under Space {
+  under NavierStokes {
+    Flux              = Roe;
+    Reconstruction    = Linear;
+    AdvectiveOperator = FiniteVolume;
+    Limiter           = VanAlbada;
+    Gradient          = LeastSquares;
+    Beta              = 0.33333333333333;
+    Gamma             = 1.0;
+  }
+  under Boundaries {
+    Type = StegerWarming;
+  }
+}
+
+under Time {
+  Type = Implicit;
+  MaxIts = 50000;
+  MaxTime = 0.15; 
+  under CflLaw{
+      Strategy = Fixed;
+      Cfl0 = 5.0;
+      CflMax = 5.0;
+ }
+  under Implicit {
+    MatrixVectorProduct = FiniteDifference;
+    TurbulenceModelCoupling = Weak;
+    under Newton {
+      MaxIts = 3;
+      Eps = 0.001;
+      FailSafe = AlwaysOn;
+      under LinearSolver {
+        under NavierStokes {
+          Type = Gmres;
+          MaxIts = 100;
+          KrylovVectors = 100;
+          Eps = 0.01;
+          under Preconditioner {
+            Type = Ras;
+            Fill = 0;
+          }
+        }
+        under TurbulenceModel {
+          Type = Gmres;
+          MaxIts = 30;
+          KrylovVectors = 30;
+          Eps = 0.01;
+          under Preconditioner {
+            Type = Ras;
+            Fill = 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+under EmbeddedFramework {
+  TypeHalfRiemannProblem = Surrogate;
+  RiemannNormal = Fluid;  
+}
+
