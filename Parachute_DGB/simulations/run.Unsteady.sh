@@ -1,4 +1,4 @@
 #!/bin/bash
 
-NF=200
+NF=400
 mpirun -n $NF aerof.opt FluidFile.Unsteady

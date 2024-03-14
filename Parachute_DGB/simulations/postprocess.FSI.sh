@@ -46,6 +46,6 @@ for i in {1..2}
     sower -struct -merge -con ../data/structuremodel.con -mesh ../data/structuremodel.msh -result results.FSI/structure.STRESSVM.$i -frequency 1 -width 20 -precision 15
 
     # postprocess solution further with xp2exo
-    $xp2exo ../sources/Structure.top postpro.FSI/structuremodel.$j.exo results.FSI/structure.GDISPLAC.$i.xpost results.FSI/structure.STRESSVM.$i.xpost
+    xp2exo ../sources/Structure.top postpro.FSI/structuremodel.$j.exo results.FSI/structure.GDISPLAC.$i.xpost results.FSI/structure.STRESSVM.$i.xpost
 
 done

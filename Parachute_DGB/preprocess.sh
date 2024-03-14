@@ -7,7 +7,7 @@ NF=400
 partnmesh sources/fluid.top $NF
 
 # Run Matcher
-# matcher sources/embeddedSurface.top sources/matcher.mesh -l 5 -output data/fluidmodel
+matcher sources/embeddedSurface.top sources/matcher.mesh -l 5 -output data/fluidmodel
 # if we consider fluid suspension line interaction, replace the previous line by 
 # matcher sources/embeddedSurface.top sources/matcher.mesh -beam -p 16 -output data/fluidmodel
 

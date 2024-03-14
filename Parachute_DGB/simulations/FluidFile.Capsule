@@ -46,7 +46,7 @@ under Input {
   Connectivity = "references.APriori/fluidmodel.con";
   Geometry = "references.APriori/fluidmodel.msh";
   Decomposition = "references.APriori/fluidmodel.dec";
-  CpuMap = "../data/fluidmodel.200cpu";
+  CpuMap = "../data/fluidmodel.400cpu";
   EmbeddedSurface = "../sources/capsule.top";
   
 }

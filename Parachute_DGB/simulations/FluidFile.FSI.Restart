@@ -76,7 +76,7 @@ under Input {
   Connectivity = "references.FSI/fluidmodel.con";
   Geometry = "references.FSI/fluidmodel.msh";
   Decomposition = "references.FSI/fluidmodel.dec";
-  CpuMap = "../data/fluidmodel.200cpu";
+  CpuMap = "../data/fluidmodel.400cpu";
   Matcher = "../data/fluidmodel.match.fluid";
   EmbeddedSurface = "../sources/embeddedSurface.top";
  

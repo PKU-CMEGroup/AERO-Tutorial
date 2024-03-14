@@ -77,7 +77,7 @@ under Input {
   Connectivity = "references.Capsule/fluidmodel.con";
   Geometry = "references.Capsule/fluidmodel.msh";
   Decomposition = "references.Capsule/fluidmodel.dec";
-  CpuMap = "../data/fluidmodel.200cpu";
+  CpuMap = "../data/fluidmodel.400cpu";
   EmbeddedSurface = "../sources/embeddedSurface.top";
 
   

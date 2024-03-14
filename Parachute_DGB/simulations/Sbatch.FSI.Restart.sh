@@ -3,7 +3,7 @@
 #SBATCH --job-name=PID.DGB.FSI.Restart
 #SBATCH --output=Sbatch.FSI.Restart.out                                                   
 #SBATCH --time=48:00:00                                                                                                                                                                                                              
-#SBATCH --ntasks=296
+#SBATCH --ntasks=496
 
 
 

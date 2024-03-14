@@ -75,7 +75,7 @@ under Input {
   Connectivity = "references.Unsteady/fluidmodel.con";
   Geometry = "references.Unsteady/fluidmodel.msh";
   Decomposition = "references.Unsteady/fluidmodel.dec";
-  CpuMap = "../data/fluidmodel.200cpu";
+  CpuMap = "../data/fluidmodel.400cpu";
   Matcher = "../data/fluidmodel.match.fluid";
   EmbeddedSurface = "../sources/embeddedSurface.top";
  

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-NF=200
+NF=400
 NS=96
 
 # run simulation
