@@ -6,7 +6,7 @@ StructureElements
 *
 BINARY
 binaryoutput on 
-decomposition "../../data/structuremodel"
+decomposition "../../data/structuremodel.dec"
 cpumap        "../../data/structuremodel.4cpu"
 global        "../../data/structuremodel.con"
 *
