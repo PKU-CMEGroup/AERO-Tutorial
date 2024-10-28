@@ -1,0 +1,136 @@
+// -----------------------------------------------------------------------------
+// SIMULATION DESCRIPTION:   
+// Steady simulation for flow over a NACA airfoil 
+// Turbulent flow with Navier-Stokes equation and Spalart Allmaras turbulence model
+// Implicit time integration method
+//  
+// FLUID GEOMETRY:    sources/fluid.top
+// -----------------------------------------------------------------------------
+
+under Problem {
+  Type = Steady;
+  Mode = NonDimensional;
+  Framework = BodyFitted;
+}
+
+under Input {
+  GeometryPrefix = "../data/fluidmodel";
+}
+
+under Output {
+  under Postpro {
+    Frequency = 500;
+    Prefix = "results.Steady/";
+    Residual = "Residual.out";
+    LiftandDrag = "../postpro.Steady/LiftandDrag.out";
+    Pressure = "Pressure.bin";
+    Mach = "Mach.bin";
+    PressureCoefficient = "PressureCoefficient.bin";
+  }
+  under Restart {
+    Frequency = 0;
+    Prefix = "references.Steady/";
+    Solution = "Solution.bin";
+    RestartData = "Restart.data";
+  }
+}
+
+under BoundaryConditions {
+  under Inlet {
+    Type = External;
+    Mach = 0.8;
+    Alpha = 0.0;
+    Beta = 5.0;
+  }
+  under Wall {
+    Type = Adiabatic;
+    Integration = Full;
+  }
+}
+
+under ReferenceState { 
+  Reynolds = 10000;
+  Length = 1.0;
+}
+
+under Equations {  
+  Type = Euler; //NavierStokes;   
+  under FluidModel[0] {
+    Fluid = PerfectGas;
+    under GasModel {
+      SpecificHeatRatio = 1.4;
+    }
+  }
+  under ThermalConductivityModel {
+    Type = ConstantPrandtl;
+  }
+  under ViscosityModel {
+    Type = Constant;
+  }
+  under TurbulenceClosure {
+    Type = TurbulenceModel;
+    under TurbulenceModel {
+      Type = SpalartAllmaras;
+    }
+  }
+}
+
+
+
+under Space {     
+  under NavierStokes {
+    Flux = Roe;
+    Reconstruction = Linear;
+    Limiter           = VanAlbada;
+    Gradient = LeastSquares;
+    Beta = 0.3333333333333333;
+    Gamma = 1.0;
+  }
+  under Boundaries {
+    Type = StegerWarming;
+  }
+}
+
+under Time {
+  MaxIts = 500;
+  Eps = 1.0E-8;
+  under CflLaw {
+    Strategy = Hybrid;
+    Cfl0 = 2.0;
+    CflMax = 200.0;
+  }
+  Type = Implicit;
+  under Implicit {
+    Type = BackwardEuler;
+    MatrixVectorProduct = FiniteDifference;
+    TurbulenceModelCoupling = Weak;
+    under Newton {
+      MaxIts = 3;
+      Eps = 0.01;
+      FailSafe = AlwaysOn;
+      under LinearSolver {
+        under NavierStokes {
+          Type = Gmres;
+          MaxIts = 50;
+          KrylovVectors = 50;
+          Eps = 0.01;
+          under Preconditioner {
+            Type = Ras;
+            Fill = 0;
+          }
+        }
+        under TurbulenceModel {
+          Type = Gmres;
+          MaxIts = 30;
+          KrylovVectors = 30;
+          Eps = 0.01;
+          under Preconditioner {
+            Type = Ras;
+            Fill = 0;
+          }
+        }
+      }
+    }
+  }
+}
+
