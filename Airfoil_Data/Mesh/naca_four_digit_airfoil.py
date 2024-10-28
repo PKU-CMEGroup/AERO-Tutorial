@@ -13,7 +13,11 @@ import matplotlib.pyplot as plt
 # The '12' indicates maximum thickness is 12% of the chord length
 #####################################################################
 
-
+def rotate(points, theta, x=0.0, y=0.0):
+    # rotate the flap around the leading point (0,0), then move the flap
+    points[:,0], points[:,1] =  points[:,0]*np.cos(theta*np.pi/180) + points[:,1]*np.sin(theta*np.pi/180) + x, \
+        -points[:,0]*np.sin(theta*np.pi/180) + points[:,1]*np.cos(theta*np.pi/180) + y
+    return points
 
 def camberLine(x, c, m, p):
     # x : location
@@ -98,8 +102,7 @@ def naca_flap_mesh(c, m, p, t, npt, closed_trailing_edge,
     shape_f, _, _ = naca_mesh(c_f, m_f, p_f, t_f, npt_f, closed_trailing_edge_f)
 
     # rotate the flap around the leading point (0,0), then move the flap
-    shape_f[:,0], shape_f[:,1] =  shape_f[:,0]*np.cos(theta_f*np.pi/180) + shape_f[:,1]*np.sin(theta_f*np.pi/180) + x_f, \
-        -shape_f[:,0]*np.sin(theta_f*np.pi/180) + shape_f[:,1]*np.cos(theta_f*np.pi/180) + y_f
+    shape_f =  rotate(shape_f, theta_f, x_f, y_f)
     
     
     return shape, shape_f

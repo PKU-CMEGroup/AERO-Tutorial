@@ -1,13 +1,21 @@
 import numpy as np
 import sys
-from naca_four_digit_airfoil import naca_mesh, naca_flap_mesh
+from naca_four_digit_airfoil import rotate, naca_mesh, naca_flap_mesh
 
+    
 
-def naca_fluid_mesh(domain_geo ='domain.geo'):
+def naca_fluid_mesh(domain_geo ='domain.geo', m=0.09, p=0.4, t=0.2, theta=0.0):
     '''
     :param domain_geo:
     :return:
     '''
+    # compute airfoils 
+    c = 1.0
+    npt = 80
+    airfoil, _, _= naca_mesh(c, m, p, t, npt, True)
+    airfoil = rotate(airfoil, theta)
+    n = airfoil.shape[0]
+
     ##################################################
     #Generate fluid domain
     #################################################
@@ -34,11 +42,6 @@ def naca_fluid_mesh(domain_geo ='domain.geo'):
     file.write("Circle(4) = {1000, 5000, 4000};\n")
 
 
-    # compute airfoils 
-    c, m, p, t = 1.0, 0.09, 0.4, 0.2
-    npt = 80
-    airfoil, _, _= naca_mesh(c, m, p, t, npt, True)
-    n = airfoil.shape[0]
 
     for i in range(n):
         file.write("Point(%d) = {%.15f,  %.15f, 0.0, cl};\n" % (i+1, airfoil[i,0], airfoil[i,1]))
@@ -108,7 +111,16 @@ def naca_fluid_mesh(domain_geo ='domain.geo'):
 
 
 
-def naca_flap_fluid_mesh(domain_geo ='domain.geo'):
+def naca_flap_fluid_mesh(domain_geo ='domain.geo', m=0.09, p=0.4, t=0.2, \
+                         m_f=0.09, p_f=0.4, t_f=0.2, theta_f=0.0, theta = 0.0):
+    # compute airfoils 
+    c, c_f = 1.0, 0.2
+    npt, npt_f = 80, 20
+    x_f, y_f = 0.985*c, -0.05*c
+    airfoil, flap = naca_flap_mesh(c, m, p, t, npt, True, c_f, m_f, p_f, t_f, npt_f, True, x_f, y_f, theta_f)
+    airfoil, flap = rotate(airfoil, theta), rotate(flap, theta)
+    n, n_f = airfoil.shape[0], flap.shape[0]
+
     '''
     :param birdWing: a node list, n[0],n[1] ....n[m-1] n[0] is a close curve
     :param domain_geo:
@@ -140,14 +152,7 @@ def naca_flap_fluid_mesh(domain_geo ='domain.geo'):
     file.write("Circle(4) = {1000, 5000, 4000};\n")
 
 
-    # compute airfoils 
-    c, m, p, t = 1.0, 0.09, 0.4, 0.2
-    npt = 80
-    c_f, m_f, p_f, t_f = 0.2, 0.09, 0.4, 0.2
-    npt_f = 20
-    x_f, y_f, theta_f = 0.985*c, -0.05*c, 0.0
-    airfoil, flap = naca_flap_mesh(c, m, p, t, npt, True, c_f, m_f, p_f, t_f, npt_f, True, x_f, y_f, theta_f)
-    n, n_f = airfoil.shape[0], flap.shape[0]
+    
 
     for i in range(n):
         file.write("Point(%d) = {%.15f,  %.15f, 0.0, cl};\n" % (i+1, airfoil[i,0], airfoil[i,1]))
@@ -230,5 +235,6 @@ def naca_flap_fluid_mesh(domain_geo ='domain.geo'):
 
 
 if __name__ =='__main__':
-    naca_fluid_mesh(domain_geo ='naca_fluid_mesh.geo')
-    naca_flap_fluid_mesh(domain_geo ='naca_flap_fluid_mesh.geo')
+    naca_fluid_mesh(domain_geo ='naca_fluid_mesh.geo', m=0.09, p=0.4, t=0.2, theta=3.0)
+    naca_flap_fluid_mesh(domain_geo ='naca_flap_fluid_mesh.geo', m=0.09, p=0.4, t=0.2, \
+                         m_f=0.09, p_f=0.4, t_f=0.2, theta_f = 30.0, theta = 3.0)
