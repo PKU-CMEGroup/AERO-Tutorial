@@ -8,7 +8,7 @@ import Mesh.top_reader as top_reader
 #uniform distribution
 
 
-def postprocess_data(input_folder_name = "Airfoil_flap", output_folder_name="Airfoil_data", index=0):
+def postprocess_data(input_folder_name = "Airfoil_flap", output_folder_name="Airfoil_flap_data", index=0):
     nodes, grid, fields, airfoil_ind, farfield_ind, \
         airfoil_nodes, airfoil_grid, airfoil_fields \
             = top_reader.fluid_data(domain_top ='./'+input_folder_name+'_%05d/sources/fluid.top'%(index), \
@@ -37,8 +37,18 @@ def postprocess_data(input_folder_name = "Airfoil_flap", output_folder_name="Air
     np.save(output_folder_name + "/airfoil_mesh/nodes_%05d"%(index) + ".npy", airfoil_nodes)
     np.save(output_folder_name + "/airfoil_mesh/elems_%05d"%(index) + ".npy", airfoil_grid)
     np.save(output_folder_name + "/airfoil_mesh/features_%05d"%(index) + ".npy", airfoil_fields)
+
+
+    with open('./'+input_folder_name+'_%05d/simulations/log.Steady.out'%(index), 'r') as log_file:
+        lines = log_file.readlines()
+    residual = np.float64(lines[-66].split()[4][:-1])
+    
+    return residual
     
 
 if __name__ == "__main__":
-    for i in range(4):
-        postprocess_data(input_folder_name = "Airfoil_flap", output_folder_name="Airfoil_data", index=i)
+    ndata = 4
+    residuals = np.zeros(ndata)
+    for i in range(ndata):
+        residuals[i] = postprocess_data(input_folder_name = "Airfoil_flap", output_folder_name="Airfoil_flap_data", index=i)
+    np.save("Airfoil_flap_residual.npy", residuals)

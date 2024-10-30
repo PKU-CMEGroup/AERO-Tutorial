@@ -1,0 +1,8 @@
+Generate data, modify flap_or_not, generate flow over airfoil with or without flap
+python generate_data.py
+
+Postprocess data, extract nodes, elements, and features array and save
+python postprocess_data.py
+
+Load data, load data and visualize
+python load_data.py

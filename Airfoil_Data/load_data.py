@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 sys.path.append( 'Mesh' )
 
 
-def load_data(input_folder_name="Airfoil_data", index=0):
+def load_data(input_folder_name="Airfoil_flap_data", index=0):
     
     
 
@@ -22,7 +22,7 @@ def load_data(input_folder_name="Airfoil_data", index=0):
 
 if __name__ == "__main__":
     
-    nodes, elems, fluid_features, airfoil_nodes, airfoil_elems, airfoil_features = load_data(input_folder_name="Airfoil_data", index=3)
+    nodes, elems, fluid_features, airfoil_nodes, airfoil_elems, airfoil_features = load_data(input_folder_name="Airfoil_flap_data", index=3)
 
     pressure, mach, airfoil_ind, farfield_ind = fluid_features[:,0], fluid_features[:,1], fluid_features[:,2], fluid_features[:,3]
     fig, ax = plt.subplots(1, 1, figsize=(6,6))
