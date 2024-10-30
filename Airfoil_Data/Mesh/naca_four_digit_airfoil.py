@@ -128,14 +128,14 @@ if __name__ == "__main__":
 
 
 
-    c, m, p, t = 1.0, 0.09, 0.4, 0.2
+    c, m, p, t = 1.0, 0.09, 0.6, 0.3
     npt = 80
-    c_f, m_f, p_f, t_f = 0.2, 0.09, 0.4, 0.2
+    c_f, m_f, p_f, t_f = 0.25, 0.09, 0.2, 0.2
     npt_f = 20
 
     fig, axs = plt.subplots(2, 1, sharex=True)
     
-    x_f, y_f, theta_f = 0.985*c, -0.05*c, 0.0
+    x_f, y_f, theta_f = 0.99*c, -0.05*c, 5.0
     shape, shape_f = naca_flap_mesh(c, m, p, t, npt, True, c_f, m_f, p_f, t_f, npt_f, True, x_f, y_f, theta_f)
     
     axs[0].plot(shape[:,0], shape[:,1], "-o", color="grey",  markersize=3)
@@ -144,7 +144,7 @@ if __name__ == "__main__":
     axs[0].set_aspect('equal')
     
 
-    theta_f = 45.0
+    theta_f = 40.0
     shape, shape_f = naca_flap_mesh(c, m, p, t, npt, True, c_f, m_f, p_f, t_f, npt_f, True, x_f, y_f, theta_f)
     axs[1].plot(shape[:,0], shape[:,1], "-o", color="grey",  markersize=3)
     axs[1].plot(shape_f[:,0], shape_f[:,1], "-o", color="grey",  markersize=3)

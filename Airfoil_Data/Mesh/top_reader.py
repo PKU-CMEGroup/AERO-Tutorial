@@ -107,7 +107,7 @@ def read_xpost_file(domain_xpost ='domain.xpost', nodes_map = None):
     
     return time, field
 
-def fluid_data(domain_top, domain_xpost):
+def fluid_data(domain_top, domain_xposts):
     # top file and xpost file
     # return:
     # nodes: double[n,2], fluid mesh nodes
@@ -121,28 +121,34 @@ def fluid_data(domain_top, domain_xpost):
 
     nodes3, elems3 = read_top_file(domain_top = domain_top)
     nodes, elems, nodes_map = filter_3d_to_2d(nodes3, elems3)
+    nnodes = nodes.shape[0]
     # never use nodes3 and elems3
-    time, field = read_xpost_file(domain_xpost =  domain_xpost, nodes_map = nodes_map)
+    fields = []
+    for domain_xpost in domain_xposts:        
+        time, field = read_xpost_file(domain_xpost =  domain_xpost, nodes_map = nodes_map)
+        fields.append(field[:, -1:]) # last time
+    fields = np.concatenate(fields, axis=1)
 
     airfoil_ind = np.array(list(set(elems["airfoil"].flatten())), dtype=np.int64)
     farfield_ind = np.array(list(set(elems["farfield"].flatten())), dtype=np.int64)
 
+
     airfoil_nodes = nodes[airfoil_ind, :]
-    airfoil_field = field[airfoil_ind]
+    airfoil_fields = fields[airfoil_ind, :]
     airfoil_ind_array = np.full(nodes.shape[0], -1)
     for i in range(len(airfoil_ind)):
         airfoil_ind_array[airfoil_ind[i]] = i
     airfoil_elems = airfoil_ind_array[elems["airfoil"]]
 
-    return nodes, elems["grid"], field[:,-1], airfoil_ind, farfield_ind,\
-    airfoil_nodes, airfoil_field,  airfoil_elems
+    return nodes, elems["grid"], fields, airfoil_ind, farfield_ind,\
+    airfoil_nodes,   airfoil_elems, airfoil_fields,
 
     
 
 if __name__ =='__main__':
     nodes, grid, field, airfoil_ind, farfield_ind, \
-        airfoil_nodes, airfoil_field,  airfoil_grid \
-            = fluid_data(domain_top ='../Airfoil3/sources/fluid.top', domain_xpost ='../Airfoil3/simulations/postpro.Steady/Pressure.xpost')
+        airfoil_nodes, airfoil_grid, airfoil_field  \
+            = fluid_data(domain_top ='../Airfoil3/sources/fluid.top', domain_xpost =['../Airfoil3/simulations/postpro.Steady/Pressure.xpost'])
     
     fig, ax = plt.subplots(1, 1, figsize=(6,6))
     ax.set_aspect('equal')
