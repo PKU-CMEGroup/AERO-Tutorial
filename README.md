@@ -37,6 +37,9 @@ This software contributes major to fluid-structure interacting problems, and has
         * [二维翼型模拟：使用浸入边界方法的无黏定常流仿真模拟](NACA/EBM/simulations/NACA_EBM_STEADY_README.ipynb)  
         关键词：Gmsh网格生成，前处理，后处理，Paraview可视化，Euler方程
         
+        * [二维翼型数据生成：使用体贴体网格的定常流仿真模拟生成数据训练神经网络](Airfoil_Data/AIRFOIL_DATA_README.ipynb)  
+        关键词：翼形参数化，python脚本，数据生成，Euler方程
+        
         * 三维翼形模拟：使用体贴体网格的非定常流仿真模拟⚠️  
         关键词：Navier-Stokes方程，Vreman湍流模型大涡模拟，降阶模型
         

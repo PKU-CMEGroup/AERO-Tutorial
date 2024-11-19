@@ -21,6 +21,7 @@ def generate_paras(ndata=5000, seed=42):
     paras[:, 6] = paras[:, 3]*35.0 + 5.0             # theta_f (flap angle) in U[5,40]
     paras[:, 7] = paras[:, 4]*25.0 - 5.0             # theta (angle of attack) in U[-5,20]
 
+    return paras
 
 #  source ~/.bashrc_frg  before runing code
 def generate_airfoil(paras, flap_or_not):
@@ -55,14 +56,24 @@ def generate_airfoil(paras, flap_or_not):
         os.chdir("..")
 
 if __name__ == "__main__":
-    paras = np.zeros((4, 8))
-    paras[:, 0] = 0.09                                   # m in U[0,0.09]
-    paras[:, 1] = 0.6                                    # p in U[0.2,0.6]
-    paras[:, 2] = 0.05, 0.05, 0.3, 0.3                   # t in U[0.05,0.3]
-    paras[:, 3] = 0.09                                   # m_f in U[0,0.09]
-    paras[:, 4] = 0.2                                    # p_f in U[0.2,0.6]
-    paras[:, 5] = 0.1,  0.2,  0.1, 0.2                   # t_f in U[0.1,0.2]
-    paras[:, 6] = 5.0                                    # theta_f (flap angle) in U[5,40]
-    paras[:, 7] = 0.0                                    # theta (angle of attack) in U[-5,20]
+    # paras = np.zeros((4, 8))
+    # paras[:, 0] = 0.09                                   # m in U[0,0.09]
+    # paras[:, 1] = 0.6                                    # p in U[0.2,0.6]
+    # paras[:, 2] = 0.05, 0.05, 0.3, 0.3                   # t in U[0.05,0.3]
+    # paras[:, 3] = 0.09                                   # m_f in U[0,0.09]
+    # paras[:, 4] = 0.2                                    # p_f in U[0.2,0.6]
+    # paras[:, 5] = 0.1,  0.2,  0.1, 0.2                   # t_f in U[0.1,0.2]
+    # paras[:, 6] = 5.0                                    # theta_f (flap angle) in U[5,40]
+    # paras[:, 7] = 0.0                                    # theta (angle of attack) in U[-5,20]
 
-    generate_airfoil(paras, True)
+    # generate_airfoil(paras, True)
+
+    GENERATE_AIRFOIL_FLAP_DATA = False
+    if GENERATE_AIRFOIL_FLAP_DATA:
+        paras = generate_paras(ndata=2000, seed=42)
+        generate_airfoil(paras, True)
+
+    GENERATE_AIRFOIL_DATA = True
+    if GENERATE_AIRFOIL_DATA:
+        paras = generate_paras(ndata=2000, seed=24)
+        generate_airfoil(paras, False)
