@@ -19,11 +19,7 @@ global        "../data/structuremodel.con"
 PARAMETERS
 andes_alpha 0
 andes_betam 0
-acme 2
-no_secondary
-no_ghosting
-no_normal_smoothing
-no_multiple_interactions
+acme 1
 ***************************************************************************
 *
 **************************************************************************

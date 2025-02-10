@@ -67,8 +67,11 @@ This software contributes major to fluid-structure interacting problems, and has
     关键词：多相流，浸入边界方法(Embedded Boundary methods)，水平集方法（Level set method），单元删除（Element deletion）
    
 * 应用实例 ⚠️
-    * [盘间带降落伞模拟](Parachute_DGB/simulations/PID_GDB_README.ipynb)<br>  
+    * [盘缝带降落伞模拟](Parachute_DGB/simulations/PID_GDB_README.ipynb)<br>  
     关键词：浸入边界方法(Embedded Boundary methods)，网格生成，自适应网格，接触碰撞
+    
+    * [三维降落伞数据生成：生成降落伞展开数据训练神经网络](Parachute_Data/PARACHUTE_DATA_README.ipynb)  
+    关键词：降落伞参数化，python脚本，数据生成，固体方程
       
         
 ## 提交问题
