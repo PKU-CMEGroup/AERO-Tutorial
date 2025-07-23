@@ -29,7 +29,7 @@ export PATH=~/frg/cmake-3.26.3-linux-x86_64/bin:${PATH}
 
 
 export PARMETISDIR=$FRG_HOME/parmetis-4.0.3/build
-export METISDIR==$FRG_HOME/parmetis-4.0.3/metis/build
+export METISDIR=$FRG_HOME/parmetis-4.0.3/metis/build
 export METISPATH=$METISDIR
 export MPIDIR=$FRG_HOME/openmpi-4.0.3/install/bin
 export PATH=$MPIDIR:${PATH}
