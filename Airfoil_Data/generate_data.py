@@ -18,8 +18,8 @@ def generate_paras(ndata=5000, seed=42):
     paras[:, 3] = paras[:, 3]*0.09                   # m_f in U[0,0.09]
     paras[:, 4] = paras[:, 4]*0.4  + 0.2             # p_f in U[0.2,0.6]
     paras[:, 5] = paras[:, 5]*0.1  + 0.1             # t_f in U[0.1,0.2]
-    paras[:, 6] = paras[:, 3]*35.0 + 5.0             # theta_f (flap angle) in U[5,40]
-    paras[:, 7] = paras[:, 4]*25.0 - 5.0             # theta (angle of attack) in U[-5,20]
+    paras[:, 6] = paras[:, 6]*35.0 + 5.0             # theta_f (flap angle) in U[5,40]
+    paras[:, 7] = paras[:, 7]*25.0 - 5.0             # theta (angle of attack) in U[-5,20]
 
     return paras
 
